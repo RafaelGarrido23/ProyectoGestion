@@ -33,7 +33,8 @@ public class DepartamentoDAOFB implements DepartamentoDAO {
     }
 
     public void escribirFichero (ArrayList<Departamento> departamentos){
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ruta))){
+        try (ObjectOutputStream oos =
+                     new ObjectOutputStream(new FileOutputStream(ruta))){
 
             oos.writeObject(departamentos);
 
