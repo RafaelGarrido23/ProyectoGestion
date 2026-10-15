@@ -32,7 +32,8 @@ public class ReservaDAOFB implements ReservaDAO {
     }
 
     public void escribirFichero (ArrayList<Reserva> reservas){
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ruta))){
+        try (ObjectOutputStream oos =
+                     new ObjectOutputStream(new FileOutputStream(ruta))){
 
             oos.writeObject(reservas);
 
