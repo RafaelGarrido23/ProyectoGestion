@@ -34,7 +34,8 @@ public class EspacioDAOFB implements EspacioDAO {
 
     @Override
     public void escribirFichero (ArrayList<Espacio> espacios){
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ruta))){
+        try (ObjectOutputStream oos =
+                     new ObjectOutputStream(new FileOutputStream(ruta))){
 
             oos.writeObject(espacios);
 
