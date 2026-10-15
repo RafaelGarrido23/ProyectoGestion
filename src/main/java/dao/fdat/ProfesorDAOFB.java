@@ -14,6 +14,7 @@ public class ProfesorDAOFB implements ProfesorDAO {
         this.ruta = ruta;
     }
 
+    @Override
     public ArrayList<Profesor> leerFichero(){
         File archivo = new File(ruta);
 
@@ -31,6 +32,7 @@ public class ProfesorDAOFB implements ProfesorDAO {
 
     }
 
+    @Override
     public void escribirFichero (ArrayList<Profesor> profesores){
         try (ObjectOutputStream oos =
                      new ObjectOutputStream(new FileOutputStream(ruta))){
