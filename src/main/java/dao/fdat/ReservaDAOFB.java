@@ -14,6 +14,7 @@ public class ReservaDAOFB implements ReservaDAO {
         this.ruta = ruta;
     }
 
+    @Override
     public ArrayList<Reserva> leerFichero(){
         File archivo = new File(ruta);
 
@@ -31,6 +32,7 @@ public class ReservaDAOFB implements ReservaDAO {
 
     }
 
+    @Override
     public void escribirFichero (ArrayList<Reserva> reservas){
         try (ObjectOutputStream oos =
                      new ObjectOutputStream(new FileOutputStream(ruta))){
