@@ -15,6 +15,7 @@ public class DepartamentoDAOFB implements DepartamentoDAO {
     }
 
 
+    @Override
     public ArrayList<Departamento> leerFichero(){
         File archivo = new File(ruta);
 
@@ -32,6 +33,7 @@ public class DepartamentoDAOFB implements DepartamentoDAO {
 
     }
 
+    @Override
     public void escribirFichero (ArrayList<Departamento> departamentos){
         try (ObjectOutputStream oos =
                      new ObjectOutputStream(new FileOutputStream(ruta))){
