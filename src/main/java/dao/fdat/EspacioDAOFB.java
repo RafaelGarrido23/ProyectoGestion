@@ -14,6 +14,7 @@ public class EspacioDAOFB implements EspacioDAO {
         this.ruta = ruta;
     }
 
+    @Override
     public ArrayList<Espacio> leerFichero(){
         File archivo = new File(ruta);
 
@@ -31,6 +32,7 @@ public class EspacioDAOFB implements EspacioDAO {
 
     }
 
+    @Override
     public void escribirFichero (ArrayList<Espacio> espacios){
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ruta))){
 
