@@ -32,7 +32,8 @@ public class ProfesorDAOFB implements ProfesorDAO {
     }
 
     public void escribirFichero (ArrayList<Profesor> profesores){
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ruta))){
+        try (ObjectOutputStream oos =
+                     new ObjectOutputStream(new FileOutputStream(ruta))){
 
             oos.writeObject(profesores);
 
