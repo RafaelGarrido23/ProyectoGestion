@@ -15,13 +15,14 @@ public class Reserva implements Serializable {
     private Profesor profesor;
     private Espacio espacio;
     private int numAsistentes;
+    private String motivo;
     private EstadoReserva estado;
 
     public Reserva() {
     }
 
-    public Reserva(int id, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin,
-                   Profesor profesor, Espacio espacio, int numAsistentes, EstadoReserva estado) {
+    public Reserva(int id, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, Profesor profesor,
+                   Espacio espacio, int numAsistentes, String motivo, EstadoReserva estado) {
         this.id = id;
         this.fecha = fecha;
         this.horaInicio = horaInicio;
@@ -29,6 +30,7 @@ public class Reserva implements Serializable {
         this.profesor = profesor;
         this.espacio = espacio;
         this.numAsistentes = numAsistentes;
+        this.motivo = motivo;
         this.estado = estado;
     }
 
@@ -60,6 +62,10 @@ public class Reserva implements Serializable {
     public int getNumAsistentes() { return numAsistentes; }
     public void setNumAsistentes(int numAsistentes) { this.numAsistentes = numAsistentes; }
 
+    // Getter & Setter "Motivo 'Reserva'"
+    public String getMotivo() { return motivo; }
+    public void setMotivo(String motivo) { this.motivo = motivo; }
+
     // Getter & Setter "Estado 'Reserva'"
     public EstadoReserva getEstado() { return estado; }
     public void setEstado(EstadoReserva estado) { this.estado = estado; }
@@ -73,6 +79,7 @@ public class Reserva implements Serializable {
                 " | Profesor: " + profesor +
                 " | Espacio: " + espacio +
                 " | NºAsistentes: " + numAsistentes +
+                " | Motivo: " + motivo +
                 " | Estado: " + estado;
     }
 }
