@@ -1,7 +1,6 @@
 package servicio;
 
 import dao.ProfesorDAO;
-import modelo.Espacio;
 import modelo.Profesor;
 
 import java.util.ArrayList;
