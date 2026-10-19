@@ -6,7 +6,7 @@ public class Espacio implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private int id;
+    private String id;
     private String nombre;
     private String tipo;
     private int capacidad;
@@ -15,7 +15,7 @@ public class Espacio implements Serializable {
     public Espacio() {
     }
 
-    public Espacio(int id, String nombre, String tipo,
+    public Espacio(String id, String nombre, String tipo,
                    int capacidad, boolean disponible) {
         this.id = id;
         this.nombre = nombre;
@@ -25,8 +25,8 @@ public class Espacio implements Serializable {
     }
 
     // Getter & Setter "ID 'Espacio'"
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     // Getter & Setter "Nombre 'Espacio'"
     public String getNombre() { return nombre; }

@@ -8,7 +8,7 @@ public class Reserva implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private int id;
+    private String id;
     private LocalDate fecha;
     private LocalTime horaInicio;
     private LocalTime horaFin;
@@ -21,7 +21,7 @@ public class Reserva implements Serializable {
     public Reserva() {
     }
 
-    public Reserva(int id, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, Profesor profesor,
+    public Reserva(String id, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, Profesor profesor,
                    Espacio espacio, int numAsistentes, String motivo, EstadoReserva estado) {
         this.id = id;
         this.fecha = fecha;
@@ -35,8 +35,8 @@ public class Reserva implements Serializable {
     }
 
     // Getter & Setter "ID 'Reserva'"
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     // Getter & Setter "Fecha 'Reserva'"
     public LocalDate getFecha() { return fecha; }
