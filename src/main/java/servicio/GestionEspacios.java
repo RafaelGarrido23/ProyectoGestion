@@ -12,7 +12,7 @@ public class GestionEspacios {
 
     public GestionEspacios(EspacioDAO espacioDAO, ArrayList<Espacio> espacios) {
         this.espacioDAO = espacioDAO;
-        this.espacios = espacios;
+        this.espacios = espacioDAO.leerFichero();
     }
 
     public void altaEspacio(Espacio espacio){
