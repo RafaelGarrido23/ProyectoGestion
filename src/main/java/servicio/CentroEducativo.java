@@ -1,5 +1,9 @@
 package servicio;
 
+import dao.DepartamentoDAO;
+import dao.EspacioDAO;
+import dao.ProfesorDAO;
+import dao.ReservaDAO;
 import dao.fcsv.DepartamentoDAOCSV;
 import dao.fcsv.EspacioDAOCSV;
 import dao.fcsv.ProfesorDAOCSV;
@@ -22,10 +26,27 @@ import java.util.ArrayList;
 
 public class CentroEducativo {
 
-    ArrayList<Departamento> departamentos = new ArrayList<>();
-    ArrayList<Profesor> profesores = new ArrayList<>();
-    ArrayList<Espacio> espacios = new ArrayList<>();
-    ArrayList<Reserva> reservas = new ArrayList<>();
+    private DepartamentoDAO departamentoDAO;
+    private ProfesorDAO profesorDAO;
+    private EspacioDAO espacioDAO;
+    private ReservaDAO reservaDAO;
+
+    private ArrayList<Departamento> departamentos = new ArrayList<>();
+    private ArrayList<Profesor> profesores = new ArrayList<>();
+    private ArrayList<Espacio> espacios = new ArrayList<>();
+    private ArrayList<Reserva> reservas = new ArrayList<>();
+
+    public CentroEducativo(DepartamentoDAO departamentoDAO, ProfesorDAO profesorDAO, EspacioDAO espacioDAO, ReservaDAO reservaDAO) {
+        this.departamentoDAO = departamentoDAO;
+        this.profesorDAO = profesorDAO;
+        this.espacioDAO = espacioDAO;
+        this.reservaDAO = reservaDAO;
+    }
+
+    public CentroEducativo(DepartamentoDAOCSV departamentoDAOCSV, ProfesorDAOCSV profesorDAOCSV, EspacioDAOCSV espacioDAOCSV, ReservaDAOCSV reservaDAOCSV) throws IOException{
+    }
+
+    /*
 
     DepartamentoDAOCSV departamentoDAOCSV = new DepartamentoDAOCSV();
     ProfesorDAOCSV profesorDAOCSV = new ProfesorDAOCSV();
@@ -42,53 +63,39 @@ public class CentroEducativo {
     EspacioDAOFJS espacioDAOFJS = new EspacioDAOFJS("json/espacios.json");
     ReservaDAOFJS reservaDAOFJS = new ReservaDAOFJS("json/reserva.json");
 
-    public CentroEducativo(DepartamentoDAOCSV departamentoDAOCSV, ProfesorDAOCSV profesorDAOCSV, EspacioDAOCSV espacioDAOCSV, ReservaDAOCSV reservaDAOCSV) throws IOException{
-    }
-
-    /*
-    public void leerFicherosCSV(){
-
-        departamentos = departamentoDAOCSV.leerFichero();
-        profesores = profesorDAOCSV.leerFichero();
-        espacios = espacioDAOCSV.leerFichero();
-        reservas = reservaDAOCSV.leerFichero();
-    }
-    */
-
-    public void leerFicherosDAT(){
-
-        departamentos = departamentoDAOFB.leerFichero();
-        profesores = profesorDAOFB.leerFichero();
-        espacios = espacioDAOFB.leerFichero();
-        reservas = reservaDAOFB.leerFichero();
-    }
-
-    public void leerFicherosJSON(){
-
-        departamentos = departamentoDAOFJS.leerFichero();
-        profesores = profesorDAOFJS.leerFichero();
-        espacios = espacioDAOFJS.leerFichero();
-        reservas = reservaDAOFJS.leerFichero();
-    }
-
     public void guardarTodo() throws IOException {
 
-        /*
-        departamentoDAOCSV.escribirFichero(departamentos);
-        profesorDAOCSV.escribirFichero(profesores);
-        espacioDAOCSV.escribirFichero(espacios);
-        reservaDAOCSV.escribirFichero(reservas);
-        */
-
+        // departamentoDAOCSV.escribirFichero(departamentos);
         departamentoDAOFB.escribirFichero(departamentos);
-        profesorDAOFB.escribirFichero(profesores);
-        espacioDAOFB.escribirFichero(espacios);
-        reservaDAOFB.escribirFichero(reservas);
-
         departamentoDAOFJS.escribirFichero(departamentos);
+
+        // profesorDAOCSV.escribirFichero(profesores);
+        profesorDAOFB.escribirFichero(profesores);
         profesorDAOFJS.escribirFichero(profesores);
+
+        // espacioDAOCSV.escribirFichero(espacios);
+        espacioDAOFB.escribirFichero(espacios);
         espacioDAOFJS.escribirFichero(espacios);
+
+        // reservaDAOCSV.escribirFichero(reservas);
+        reservaDAOFB.escribirFichero(reservas);
         reservaDAOFJS.escribirFichero(reservas);
+    }
+
+     */
+
+    public void leerTodo() {
+        departamentoDAO.leerFichero();
+        profesorDAO.leerFichero();
+        espacioDAO.leerFichero();
+        reservaDAO.leerFichero();
+    }
+
+    public void guardarTodo() throws IOException{
+        departamentoDAO.escribirFichero(departamentos);
+        profesorDAO.escribirFichero(profesores);
+        espacioDAO.escribirFichero(espacios);
+        reservaDAO.escribirFichero(reservas);
     }
 
     public ArrayList<Departamento> getDepartamentos(){

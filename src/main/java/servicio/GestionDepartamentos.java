@@ -2,7 +2,6 @@ package servicio;
 
 import dao.DepartamentoDAO;
 import modelo.Departamento;
-import modelo.Espacio;
 
 import java.util.ArrayList;
 
