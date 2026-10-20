@@ -14,7 +14,9 @@ import java.util.ArrayList;
 
 public class EspacioDAOFJS implements EspacioDAO {
 
-    private final String ruta = "json/espacios.json";
+    private final String ruta;
+
+    public EspacioDAOFJS(String ruta) { this.ruta = ruta; }
 
     @Override
     public ArrayList<Espacio> leerFichero(){

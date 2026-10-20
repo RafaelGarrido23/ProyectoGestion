@@ -23,8 +23,8 @@ public class Profesor implements Serializable {
     }
 
     // Getter & Setter "ID 'Profesor'"
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public String getIdProfesor() { return id; }
+    public void setIdProfesor(String id) { this.id = id; }
 
     // Getter & Setter "Nombre 'Profesor'"
     public String getNombre() { return nombre; }

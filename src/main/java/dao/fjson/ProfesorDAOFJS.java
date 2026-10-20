@@ -14,7 +14,9 @@ import java.util.ArrayList;
 
 public class ProfesorDAOFJS implements ProfesorDAO {
 
-    private final String ruta = "json/profesores.json";
+    private final String ruta;
+
+    public ProfesorDAOFJS(String ruta) { this.ruta = ruta; }
 
     @Override
     public ArrayList<Profesor> leerFichero(){

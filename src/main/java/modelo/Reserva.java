@@ -35,8 +35,8 @@ public class Reserva implements Serializable {
     }
 
     // Getter & Setter "ID 'Reserva'"
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public String getIdReserva() { return id; }
+    public void setIdReserva(String id) { this.id = id; }
 
     // Getter & Setter "Fecha 'Reserva'"
     public LocalDate getFecha() { return fecha; }

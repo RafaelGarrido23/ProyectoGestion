@@ -11,7 +11,9 @@ import java.util.ArrayList;
 
 public class DepartamentoDAOFJS implements DepartamentoDAO {
 
-    private final String ruta = "json/departamento.json";
+    private final String ruta;
+
+    public DepartamentoDAOFJS(String ruta) { this.ruta = ruta; }
 
     @Override
     public ArrayList<Departamento> leerFichero(){

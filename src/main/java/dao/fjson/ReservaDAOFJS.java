@@ -15,7 +15,9 @@ import java.util.ArrayList;
 
 public class ReservaDAOFJS implements ReservaDAO {
 
-    private final String ruta = "json/reserva.json";
+    private final String ruta;
+
+    public ReservaDAOFJS(String ruta) { this.ruta = ruta; }
 
     @Override
     public ArrayList<Reserva> leerFichero(){

@@ -25,8 +25,8 @@ public class Espacio implements Serializable {
     }
 
     // Getter & Setter "ID 'Espacio'"
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public String getIdEspacio() { return id; }
+    public void setIdEspacio(String id) { this.id = id; }
 
     // Getter & Setter "Nombre 'Espacio'"
     public String getNombre() { return nombre; }

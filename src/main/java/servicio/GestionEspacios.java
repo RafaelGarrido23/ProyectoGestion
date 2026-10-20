@@ -18,18 +18,17 @@ public class GestionEspacios {
     public void altaEspacio(Espacio espacio){
             validarEspacio(espacio);
 
-            if ((buscarPorId(espacio.getId()) != null)){
+            if ((buscarPorId(espacio.getIdEspacio()) != null)){
                 throw new IllegalArgumentException("Ya existe un espacio con ese ID");
             }
 
             espacios.add(espacio);
-            guardar();
     }
 
     public void modificarEspacio(Espacio modificado){
         validarEspacio(modificado);
 
-        Espacio espacio = buscarPorId(modificado.getId());
+        Espacio espacio = buscarPorId(modificado.getIdEspacio());
 
         if (espacio == null){
             throw new IllegalArgumentException("El espacio no existe");
@@ -39,8 +38,6 @@ public class GestionEspacios {
         espacio.setTipo(espacio.getTipo());
         espacio.setCapacidad(espacio.getCapacidad());
         espacio.setTipo(espacio.getTipo());
-
-        guardar();
     }
 
     public void eliminarEspacio(String id){
@@ -51,7 +48,6 @@ public class GestionEspacios {
         }
 
         espacios.remove(espacio);
-        guardar();
     }
 
     public ArrayList<Espacio> consultarEspacios(){
@@ -76,12 +72,11 @@ public class GestionEspacios {
         }
 
         espacio.setDisponible(disponible);
-        guardar();
     }
 
     private void validarEspacio(Espacio espacio) {
         if (espacio == null){ throw new IllegalArgumentException("El espacio puede ser nulo"); }
-        if (espacio.getId() == null || espacio.getId().trim().isEmpty()){ throw new IllegalArgumentException("El ID es obligatorio"); }
+        if (espacio.getIdEspacio() == null || espacio.getIdEspacio().trim().isEmpty()){ throw new IllegalArgumentException("El ID es obligatorio"); }
         if (espacio.getNombre() == null || espacio.getNombre().trim().isEmpty()){ throw new IllegalArgumentException("El nombre es obligatorio"); }
         if (espacio.getTipo() == null || espacio.getTipo().trim().isEmpty()){ throw new IllegalArgumentException("El tipo es obligatorio"); }
         if (espacio.getCapacidad() <= 0){ throw new IllegalArgumentException("La capacidad debe ser mayor que 0"); }
@@ -90,15 +85,10 @@ public class GestionEspacios {
 
     private Espacio buscarPorId(String id){
         for (Espacio espacio : espacios){
-            if (espacio.getId().equals(id)){
+            if (espacio.getIdEspacio().equals(id)){
                 return espacio;
             }
         }
         return null;
     }
-
-    private void guardar(){
-        espacioDAO.escribirFichero(espacios);
-    }
-
 }

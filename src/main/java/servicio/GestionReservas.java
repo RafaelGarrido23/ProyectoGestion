@@ -21,14 +21,13 @@ public class GestionReservas {
     public void crearReserva(Reserva reserva){
         validarReserva(reserva);
 
-        if ((buscarPorId(reserva.getId()) != null)){
+        if ((buscarPorId(reserva.getIdReserva()) != null)){
             throw new IllegalArgumentException("Ya existe una reserva con ese ID");
         }
 
         comprobarDisponibilidad(reserva);
 
         reservas.add(reserva);
-        guardar();
     }
 
     public ArrayList<Reserva> consultarReservas(){
@@ -50,8 +49,8 @@ public class GestionReservas {
 
         for (Reserva reserva : reservas){
             if (reserva.getProfesor() != null &&
-                    reserva.getProfesor().getId() != null &&
-                    reserva.getProfesor().getId().equals(id)){
+                    reserva.getProfesor().getIdProfesor() != null &&
+                    reserva.getProfesor().getIdProfesor().equals(id)){
                 resultado.add(reserva);
             }
         }
@@ -63,8 +62,8 @@ public class GestionReservas {
 
         for (Reserva reserva : reservas){
             if (reserva.getEspacio() != null &&
-                    reserva.getEspacio().getId() != null &&
-                    reserva.getEspacio().getId().equals(id)){
+                    reserva.getEspacio().getIdEspacio() != null &&
+                    reserva.getEspacio().getIdEspacio().equals(id)){
                 resultado.add(reserva);
             }
         }
@@ -83,7 +82,6 @@ public class GestionReservas {
         }
 
         reserva.setEstado(EstadoReserva.Cancelada);
-        guardar();
     }
 
     private void comprobarDisponibilidad(Reserva nuevo) {
@@ -114,13 +112,13 @@ public class GestionReservas {
 
             boolean mismoEspacio =
                     existente.getEspacio() != null
-                            && existente.getEspacio().getId()
-                            .equals(espacio.getId());
+                            && existente.getEspacio().getIdEspacio()
+                            .equals(espacio.getIdEspacio());
 
             boolean mismoProfesor =
                     existente.getProfesor() != null
-                            && existente.getProfesor().getId()
-                            .equals(profesor.getId());
+                            && existente.getProfesor().getIdProfesor()
+                            .equals(profesor.getIdProfesor());
 
             boolean seSolapan =
                     nuevo.getHoraInicio().isBefore(
@@ -140,7 +138,7 @@ public class GestionReservas {
 
     private void validarReserva(Reserva reserva) {
         if (reserva == null){ throw new IllegalArgumentException("La reserva puede ser nula"); }
-        if (reserva.getId() == null || reserva.getId().trim().isEmpty()){ throw new IllegalArgumentException("El ID es obligatorio"); }
+        if (reserva.getIdReserva() == null || reserva.getIdReserva().trim().isEmpty()){ throw new IllegalArgumentException("El ID es obligatorio"); }
         if (reserva.getFecha() == null){ throw new IllegalArgumentException("La fecha es obligatoria"); }
         if (reserva.getHoraInicio() == null || reserva.getHoraFin() == null){ throw new IllegalArgumentException("Las horas son obligatorias"); }
         if (reserva.getHoraFin().isAfter(reserva.getHoraInicio())){ throw new IllegalArgumentException("La hora final debe ser posterior a la inicial"); }
@@ -152,15 +150,10 @@ public class GestionReservas {
 
     private Reserva buscarPorId(String id){
         for (Reserva reserva : reservas){
-            if (reserva.getId().equals(id)){
+            if (reserva.getIdReserva().equals(id)){
                 return reserva;
             }
         }
         return null;
     }
-
-    private void guardar(){
-        reservaDAO.escribirFichero(reservas);
-    }
-
 }

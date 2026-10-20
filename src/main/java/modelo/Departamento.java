@@ -18,8 +18,8 @@ public class Departamento implements Serializable {
     }
 
     // Getter & Setter "ID 'Departamento'"
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public String getIdDepartamento() { return id; }
+    public void setIdDepartamento(String id) { this.id = id; }
 
     // Getter & Setter "Nombre 'Departamento'"
     public String getNombre() { return nombre; }
