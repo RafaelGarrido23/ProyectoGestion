@@ -33,7 +33,7 @@ public class Profesor implements Serializable {
 
     // Getter & Setter "Nombre 'Profesor'"
     public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = apellidos; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
     // Getter & Setter "Apellidos 'Profesor'"
     public String getApellidos() { return apellidos; }

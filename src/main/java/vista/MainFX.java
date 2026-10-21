@@ -93,7 +93,7 @@ public class MainFX extends Application {
     private VBox pantallaProfesores(){
         TableView<Profesor> tabla=new TableView<>();
         TableColumn<Profesor,String> id=new TableColumn<>("ID"); id.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getIdProfesor()));
-        TableColumn<Profesor,String> nombre=new TableColumn<>("Nombre"); nombre.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getNombre()));
+        TableColumn<Profesor,String> nombre=new TableColumn<>("Nombre"); nombre.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getNombre()+ " " + d.getValue().getApellidos()));
         TableColumn<Profesor,String> email=new TableColumn<>("Email"); email.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getEmail()));
         TableColumn<Profesor,String> dep=new TableColumn<>("Departamento"); dep.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getIdDepartamento()==null?"":d.getValue().getIdDepartamento().getNombre()));
         tabla.getColumns().addAll(id,nombre,email,dep); cargar(tabla,centro.getProfesores());
