@@ -12,16 +12,17 @@ public class DeserializadorProfesor implements JsonDeserializer<Profesor> {
         JsonObject jsonObject = json.getAsJsonObject();
         Profesor profesor = new Profesor();
 
-        // 1. Extraemos los datos del profesor
+        // 1. Mapear TODOS los atributos básicos de Profesor
         profesor.setIdProfesor(jsonObject.get("idProfesor").getAsString());
         profesor.setNombre(jsonObject.get("nombre").getAsString());
+        profesor.setApellidos(jsonObject.get("apellidos").getAsString());
+        profesor.setEmail(jsonObject.get("email").getAsString());
 
-        // 2. Extraemos el ID del departamento como String
-        String idDeptoStr = jsonObject.get("idDepartamento").getAsString();
-
-        // 3. ¡SOLUCIÓN! Construimos el objeto Departamento intermedio solo con su ID
-        // (Asegúrate de que tu clase Departamento tenga un constructor que acepte un String)
-        profesor.setIdDepartamento(new Departamento(idDeptoStr));
+        // 2. Mapear el Departamento (creando el objeto intermedio con su ID)
+        if (jsonObject.has("idDepartamento")) {
+            String idDeptoStr = jsonObject.get("idDepartamento").getAsString();
+            profesor.setIdDepartamento(new Departamento(idDeptoStr));
+        }
 
         return profesor;
     }

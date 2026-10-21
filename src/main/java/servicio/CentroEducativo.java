@@ -20,6 +20,7 @@ import modelo.Departamento;
 import modelo.Espacio;
 import modelo.Profesor;
 import modelo.Reserva;
+import vista.MainFX;
 
 import java.io.IOException;
 import java.util.ArrayList;

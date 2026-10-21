@@ -17,7 +17,8 @@ public class Departamento implements Serializable {
         this.nombre = nombre;
     }
 
-    public Departamento(String idDeptoStr) {
+    public Departamento(String idDepartamento) {
+        this.idDepartamento = idDepartamento;
     }
 
     // Getter & Setter "ID 'Departamento'"
@@ -30,8 +31,6 @@ public class Departamento implements Serializable {
 
     @Override
     public String toString() {
-        return "ID Departamento: " + idDepartamento +
-                " | Nombre: " + nombre;
-
+        return this.idDepartamento;
     }
 }
