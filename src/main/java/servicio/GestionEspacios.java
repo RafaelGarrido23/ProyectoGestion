@@ -37,7 +37,6 @@ public class GestionEspacios {
         espacio.setNombre(espacio.getNombre());
         espacio.setTipo(espacio.getTipo());
         espacio.setCapacidad(espacio.getCapacidad());
-        espacio.setTipo(espacio.getTipo());
     }
 
     public void eliminarEspacio(String id){
@@ -64,14 +63,14 @@ public class GestionEspacios {
         return espacio;
     }
 
-    public void cambiarDisponibilidad(String id, boolean disponible){
+    public void cambiarDisponibilidad(String id, String estado){
         Espacio espacio = buscarPorId(id);
 
         if (espacio == null){
             throw new IllegalArgumentException("El espacio no existe");
         }
 
-        espacio.setDisponible(disponible);
+        espacio.setEstado(estado);
     }
 
     private void validarEspacio(Espacio espacio) {

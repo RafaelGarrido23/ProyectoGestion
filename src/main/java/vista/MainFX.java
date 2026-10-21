@@ -1,5 +1,9 @@
 package vista;
 
+import dao.fjson.DepartamentoDAOFJS;
+import dao.fjson.EspacioDAOFJS;
+import dao.fjson.ProfesorDAOFJS;
+import dao.fjson.ReservaDAOFJS;
 import javafx.application.Application;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,13 +17,10 @@ import modelo.Departamento;
 import modelo.Espacio;
 import modelo.Profesor;
 import modelo.Reserva;
-import dao.fcsv.*;
-import modelo.*;
 import servicio.CentroEducativo;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 public class MainFX extends Application {
     private final BorderPane root = new BorderPane();
@@ -29,8 +30,8 @@ public class MainFX extends Application {
 
     @Override public void start(Stage stage){
         try{
-           centro=new CentroEducativo(new DepartamentoDAOCSV(),new ProfesorDAOCSV(),new EspacioDAOCSV(),new ReservaDAOCSV());
-        }catch(IOException e){ mostrarError("Error al cargar los CSV",e.getMessage()); return; }
+           centro=new CentroEducativo(new DepartamentoDAOFJS("json/departamento.json"),new ProfesorDAOFJS("json/profesores.json"),new EspacioDAOFJS("json/espacios.json"),new ReservaDAOFJS("json/reserva.json"));
+        } catch(IOException e){ mostrarError("Error al cargar los CSV",e.getMessage()); return; }
         root.setTop(crearMenu()); root.setCenter(pantallaInicio());
         stage.setScene(new Scene(root,1100,680));
         stage.setTitle("Gestión de reservas - Centro Educativo (CSV)");
@@ -91,9 +92,9 @@ public class MainFX extends Application {
     private VBox pantallaProfesores(){
         TableView<Profesor> tabla=new TableView<>();
         TableColumn<Profesor,String> id=new TableColumn<>("ID"); id.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getIdProfesor()));
-        TableColumn<Profesor,String> nombre=new TableColumn<>("Nombre"); nombre.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getNombre()));
+        TableColumn<Profesor,String> nombre=new TableColumn<>("Nombre"); nombre.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getApellidos()));
         TableColumn<Profesor,String> email=new TableColumn<>("Email"); email.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getEmail()));
-        TableColumn<Profesor,String> dep=new TableColumn<>("Departamento"); dep.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getDepartamento()==null?"":d.getValue().getDepartamento().getNombre()));
+        TableColumn<Profesor,String> dep=new TableColumn<>("Departamento"); dep.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getIdDepartamento()==null?"":d.getValue().getIdDepartamento().getNombre()));
         tabla.getColumns().addAll(id,nombre,email,dep); cargar(tabla,centro.getProfesores());
         Button eliminar=new Button("Eliminar seleccionado");
         // eliminar.setOnAction(e->{Profesor p=tabla.getSelectionModel().getSelectedItem();if(p==null){mostrarError("Aviso","Seleccione un profesor.");return;}try{centro.bajaProfesor(p.getId());cargar(tabla,centro.getProfesores());}catch(Exception ex){mostrarError("No se puede eliminar",ex.getMessage());}});
@@ -114,7 +115,7 @@ public class MainFX extends Application {
         TableColumn<Espacio,String> nombre=new TableColumn<>("Nombre");nombre.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getNombre()));
         TableColumn<Espacio,String> tipo=new TableColumn<>("Tipo");tipo.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getTipo()));
         TableColumn<Espacio,Number> cap=new TableColumn<>("Capacidad");cap.setCellValueFactory(d->new SimpleIntegerProperty(d.getValue().getCapacidad()));
-        TableColumn<Espacio,String> disponible=new TableColumn<>("Disponible");disponible.setCellValueFactory(d->new SimpleStringProperty(d.getValue().isDisponible()?"Sí":"No"));
+        TableColumn<Espacio,String> disponible=new TableColumn<>("Disponible");disponible.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getEstado().equals("DISPONIBLE")?"Sí":"No"));
         tabla.getColumns().addAll(id,nombre,tipo,cap,disponible);cargar(tabla,centro.getEspacios());
         Button cambiar=new Button("Cambiar disponibilidad");cambiar.setOnAction(e->{
             Espacio x=tabla.getSelectionModel().getSelectedItem();
@@ -138,11 +139,11 @@ public class MainFX extends Application {
         TableColumn<Reserva,String> id=new TableColumn<>("ID");id.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getIdReserva()));
         TableColumn<Reserva,String> fecha=new TableColumn<>("Fecha");fecha.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getFecha().toString()));
         TableColumn<Reserva,String> horario=new TableColumn<>("Horario");horario.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getHoraInicio()+" - "+d.getValue().getHoraFin()));
-        TableColumn<Reserva,String> profesor=new TableColumn<>("Profesor");profesor.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getProfesor().getNombre()));
-        TableColumn<Reserva,String> espacio=new TableColumn<>("Espacio");espacio.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getEspacio().getNombre()));
-        TableColumn<Reserva,Number> asistentes=new TableColumn<>("Asistentes");asistentes.setCellValueFactory(d->new SimpleIntegerProperty(d.getValue().getNumAsistentes()));
         TableColumn<Reserva,String> estado=new TableColumn<>("Estado");estado.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getEstado().toString()));
-        tabla.getColumns().addAll(id,fecha,horario,profesor,espacio,asistentes,estado);cargar(tabla,centro.getReservas());
+        TableColumn<Reserva,String> profesor=new TableColumn<>("Profesor");profesor.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getIdProfesor().getApellidos()));
+        TableColumn<Reserva,String> espacio=new TableColumn<>("Espacio");espacio.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getIdEspacio().getNombre()));
+        TableColumn<Reserva,Number> asistentes=new TableColumn<>("Asistentes");asistentes.setCellValueFactory(d->new SimpleIntegerProperty(d.getValue().getNumAsistentes()));
+        tabla.getColumns().addAll(id,fecha,horario,estado,profesor,espacio,asistentes);cargar(tabla,centro.getReservas());
         Button cancelar=new Button("Cancelar reserva seleccionada");
         cancelar.setOnAction(e->{
             Reserva r=tabla.getSelectionModel().getSelectedItem();

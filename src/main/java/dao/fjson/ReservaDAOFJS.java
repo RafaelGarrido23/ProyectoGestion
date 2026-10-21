@@ -1,16 +1,19 @@
 package dao.fjson;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import dao.ReservaDAO;
-import modelo.Departamento;
-import modelo.Profesor;
+import dao.fjson.adaptadoresJSON.AdaptadorLocalDate;
+import dao.fjson.adaptadoresJSON.AdaptadorLocalTime;
 import modelo.Reserva;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class ReservaDAOFJS implements ReservaDAO {
@@ -24,9 +27,16 @@ public class ReservaDAOFJS implements ReservaDAO {
 
         try (FileReader flujoDatos = new FileReader(ruta)){
 
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder()
+                .registerTypeAdapter(
+                    LocalTime.class, new AdaptadorLocalTime())
+                .registerTypeAdapter(
+                    LocalDate.class, new AdaptadorLocalDate())
+                .create();
+
             Type tipoLista =
                 new TypeToken<ArrayList<Reserva>>(){}.getType();
+
             ArrayList<Reserva> reservas =
                 gson.fromJson(flujoDatos, tipoLista);
 

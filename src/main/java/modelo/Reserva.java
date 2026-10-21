@@ -8,35 +8,35 @@ public class Reserva implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String id;
+    private String idReserva;
     private LocalDate fecha;
     private LocalTime horaInicio;
     private LocalTime horaFin;
-    private Profesor profesor;
-    private Espacio espacio;
-    private int numAsistentes;
-    private String motivo;
     private EstadoReserva estado;
+    private Profesor idProfesor;
+    private Espacio idEspacio;
+    private String motivo;
+    private int numAsistentes;
 
     public Reserva() {
     }
 
-    public Reserva(String id, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, Profesor profesor,
-                   Espacio espacio, int numAsistentes, String motivo, EstadoReserva estado) {
-        this.id = id;
+    public Reserva(String idReserva, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, EstadoReserva estado,
+                   Profesor idProfesor, Espacio idEspacio, String motivo, int numAsistentes) {
+        this.idReserva = idReserva;
         this.fecha = fecha;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
-        this.profesor = profesor;
-        this.espacio = espacio;
-        this.numAsistentes = numAsistentes;
-        this.motivo = motivo;
         this.estado = estado;
+        this.idProfesor = idProfesor;
+        this.idEspacio = idEspacio;
+        this.motivo = motivo;
+        this.numAsistentes = numAsistentes;
     }
 
     // Getter & Setter "ID 'Reserva'"
-    public String getIdReserva() { return id; }
-    public void setIdReserva(String id) { this.id = id; }
+    public String getIdReserva() { return idReserva; }
+    public void setIdReserva(String id) { this.idReserva = id; }
 
     // Getter & Setter "Fecha 'Reserva'"
     public LocalDate getFecha() { return fecha; }
@@ -50,36 +50,36 @@ public class Reserva implements Serializable {
     public LocalTime getHoraFin() { return horaFin; }
     public void setHoraFin(LocalTime horaFin) { this.horaFin = horaFin; }
 
+    // Getter & Setter "Estado 'Reserva'"
+    public EstadoReserva getEstado() { return estado; }
+    public void setEstado(EstadoReserva estado) { this.estado = estado; }
+
     // Getter & Setter "Profesor 'Reserva'"
-    public Profesor getProfesor() { return profesor; }
-    public void setProfesor(Profesor profesor) { this.profesor = profesor; }
+    public Profesor getIdProfesor() { return idProfesor; }
+    public void setIdProfesor(Profesor idProfesor) { this.idProfesor = idProfesor; }
 
     // Getter & Setter "Espacio 'Reserva'"
-    public Espacio getEspacio() { return espacio; }
-    public void setEspacio(Espacio espacio) { this.espacio = espacio; }
-
-    // Getter & Setter "numAsistentes 'Reserva'"
-    public int getNumAsistentes() { return numAsistentes; }
-    public void setNumAsistentes(int numAsistentes) { this.numAsistentes = numAsistentes; }
+    public Espacio getIdEspacio() { return idEspacio; }
+    public void setIdEspacio(Espacio idEspacio) { this.idEspacio = idEspacio; }
 
     // Getter & Setter "Motivo 'Reserva'"
     public String getMotivo() { return motivo; }
     public void setMotivo(String motivo) { this.motivo = motivo; }
 
-    // Getter & Setter "Estado 'Reserva'"
-    public EstadoReserva getEstado() { return estado; }
-    public void setEstado(EstadoReserva estado) { this.estado = estado; }
+    // Getter & Setter "numAsistentes 'Reserva'"
+    public int getNumAsistentes() { return numAsistentes; }
+    public void setNumAsistentes(int numAsistentes) { this.numAsistentes = numAsistentes; }
 
     @Override
     public String toString() {
-        return "ID Reserva: " + id +
+        return "ID Reserva: " + idReserva +
                 " | Fecha: " + fecha +
                 " | Hora Inicio: " + horaInicio +
                 " | Hora Fin: " + horaFin +
-                " | Profesor: " + profesor +
-                " | Espacio: " + espacio +
-                " | NºAsistentes: " + numAsistentes +
+                " | Estado: " + estado +
+                " | Profesor: " + idProfesor +
+                " | Espacio: " + idEspacio +
                 " | Motivo: " + motivo +
-                " | Estado: " + estado;
+                " | NºAsistentes: " + numAsistentes;
     }
 }

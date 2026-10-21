@@ -35,8 +35,9 @@ public class GestionProfesores {
         }
 
         profesor.setNombre(profesor.getNombre());
+        profesor.setApellidos(profesor.getApellidos());
         profesor.setEmail(profesor.getEmail());
-        profesor.setDepartamento(profesor.getDepartamento());
+        profesor.setIdDepartamento(profesor.getIdDepartamento());
     }
 
     public void eliminarProfesor(String id){
@@ -67,9 +68,9 @@ public class GestionProfesores {
         ArrayList<Profesor> resultado = new ArrayList<>();
 
         for (Profesor profesor : profesores){
-            if (profesor.getDepartamento() != null &&
-                    profesor.getDepartamento().getIdDepartamento() != null &&
-                        profesor.getDepartamento().getIdDepartamento().equals(id)){
+            if (profesor.getIdDepartamento() != null &&
+                    profesor.getIdDepartamento().getIdDepartamento() != null &&
+                        profesor.getIdDepartamento().getIdDepartamento().equals(id)){
                 resultado.add(profesor);
             }
         }
@@ -80,8 +81,9 @@ public class GestionProfesores {
         if (profesor == null){ throw new IllegalArgumentException("El profesor puede ser nulo"); }
         if (profesor.getIdProfesor() == null || profesor.getIdProfesor().trim().isEmpty()){ throw new IllegalArgumentException("El ID es obligatorio"); }
         if (profesor.getNombre() == null || profesor.getNombre().trim().isEmpty()){ throw new IllegalArgumentException("El nombre es obligatorio"); }
+        if (profesor.getApellidos() == null || profesor.getApellidos().trim().isEmpty()){ throw new IllegalArgumentException("Los apellidos son obligatorios"); }
         if (profesor.getEmail() == null || profesor.getEmail().trim().isEmpty()){ throw new IllegalArgumentException("El email es obligatorio"); }
-        if (profesor.getDepartamento() == null){ throw new IllegalArgumentException("El profesor debe pertenecer a un departamento"); }
+        if (profesor.getIdDepartamento() == null){ throw new IllegalArgumentException("El profesor debe pertenecer a un departamento"); }
     }
 
     private Profesor buscarPorId(String id){

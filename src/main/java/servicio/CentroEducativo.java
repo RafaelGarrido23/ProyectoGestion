@@ -36,14 +36,21 @@ public class CentroEducativo {
     private ArrayList<Espacio> espacios = new ArrayList<>();
     private ArrayList<Reserva> reservas = new ArrayList<>();
 
-    public CentroEducativo(DepartamentoDAO departamentoDAO, ProfesorDAO profesorDAO, EspacioDAO espacioDAO, ReservaDAO reservaDAO) {
-        this.departamentoDAO = departamentoDAO;
-        this.profesorDAO = profesorDAO;
-        this.espacioDAO = espacioDAO;
-        this.reservaDAO = reservaDAO;
+
+    public CentroEducativo(DepartamentoDAOFB departamentoDAOFB, ProfesorDAOFB profesorDAOFB, EspacioDAOFB espacioDAOFB, ReservaDAOFB reservaDAOFB) throws IOException {
+        this.departamentoDAO = departamentoDAOFB;
+        this.profesorDAO = profesorDAOFB;
+        this.espacioDAO = espacioDAOFB;
+        this.reservaDAO = reservaDAOFB;
+        leerTodo();
     }
 
-    public CentroEducativo(DepartamentoDAOCSV departamentoDAOCSV, ProfesorDAOCSV profesorDAOCSV, EspacioDAOCSV espacioDAOCSV, ReservaDAOCSV reservaDAOCSV) throws IOException{
+    public CentroEducativo(DepartamentoDAOFJS departamentoDAOFJS, ProfesorDAOFJS profesorDAOFJS, EspacioDAOFJS espacioDAOFJS, ReservaDAOFJS reservaDAOFJS) throws IOException {
+        this.departamentoDAO = departamentoDAOFJS;
+        this.profesorDAO = profesorDAOFJS;
+        this.espacioDAO = espacioDAOFJS;
+        this.reservaDAO = reservaDAOFJS;
+        leerTodo();
     }
 
     /*
@@ -65,19 +72,19 @@ public class CentroEducativo {
 
     public void guardarTodo() throws IOException {
 
-        // departamentoDAOCSV.escribirFichero(departamentos);
+        departamentoDAOCSV.escribirFichero(departamentos);
         departamentoDAOFB.escribirFichero(departamentos);
         departamentoDAOFJS.escribirFichero(departamentos);
 
-        // profesorDAOCSV.escribirFichero(profesores);
+        profesorDAOCSV.escribirFichero(profesores);
         profesorDAOFB.escribirFichero(profesores);
         profesorDAOFJS.escribirFichero(profesores);
 
-        // espacioDAOCSV.escribirFichero(espacios);
+        espacioDAOCSV.escribirFichero(espacios);
         espacioDAOFB.escribirFichero(espacios);
         espacioDAOFJS.escribirFichero(espacios);
 
-        // reservaDAOCSV.escribirFichero(reservas);
+        reservaDAOCSV.escribirFichero(reservas);
         reservaDAOFB.escribirFichero(reservas);
         reservaDAOFJS.escribirFichero(reservas);
     }
@@ -85,10 +92,10 @@ public class CentroEducativo {
      */
 
     public void leerTodo() {
-        departamentoDAO.leerFichero();
-        profesorDAO.leerFichero();
-        espacioDAO.leerFichero();
-        reservaDAO.leerFichero();
+        departamentos = departamentoDAO.leerFichero();
+        profesores = profesorDAO.leerFichero();
+        espacios = espacioDAO.leerFichero();
+        reservas = reservaDAO.leerFichero();
     }
 
     public void guardarTodo() throws IOException{

@@ -6,20 +6,20 @@ public class Departamento implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String id;
+    private String idDepartamento;
     private String nombre;
 
     public Departamento() {
     }
 
-    public Departamento(String id, String nombre) {
-        this.id = id;
+    public Departamento(String idDepartamento, String nombre) {
+        this.idDepartamento = idDepartamento;
         this.nombre = nombre;
     }
 
     // Getter & Setter "ID 'Departamento'"
-    public String getIdDepartamento() { return id; }
-    public void setIdDepartamento(String id) { this.id = id; }
+    public String getIdDepartamento() { return idDepartamento; }
+    public void setIdDepartamento(String id) { this.idDepartamento = id; }
 
     // Getter & Setter "Nombre 'Departamento'"
     public String getNombre() { return nombre; }
@@ -27,7 +27,7 @@ public class Departamento implements Serializable {
 
     @Override
     public String toString() {
-        return "ID Departamento: " + id +
+        return "ID Departamento: " + idDepartamento +
                 " | Nombre: " + nombre;
 
     }

@@ -6,27 +6,30 @@ public class Espacio implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String id;
+    private String idEspacio;
     private String nombre;
     private String tipo;
+    private String ubicacion;
     private int capacidad;
-    private boolean disponible;
+    private String equipamiento;
+    private String estado;
 
     public Espacio() {
     }
 
-    public Espacio(String id, String nombre, String tipo,
-                   int capacidad, boolean disponible) {
-        this.id = id;
+    public Espacio(String idEspacio, String nombre, String tipo, String ubicacion, int capacidad, String equipamiento, String estado) {
+        this.idEspacio = idEspacio;
         this.nombre = nombre;
         this.tipo = tipo;
+        this.ubicacion = ubicacion;
         this.capacidad = capacidad;
-        this.disponible = disponible;
+        this.equipamiento = equipamiento;
+        this.estado = estado;
     }
 
     // Getter & Setter "ID 'Espacio'"
-    public String getIdEspacio() { return id; }
-    public void setIdEspacio(String id) { this.id = id; }
+    public String getIdEspacio() { return idEspacio; }
+    public void setIdEspacio(String id) { this.idEspacio = id; }
 
     // Getter & Setter "Nombre 'Espacio'"
     public String getNombre() { return nombre; }
@@ -36,20 +39,29 @@ public class Espacio implements Serializable {
     public String getTipo() { return tipo; }
     public void setTipo(String tipo) { this.tipo = tipo; }
 
+    // Getter & Setter "Ubicación 'Espacio'"
+    public String getUbicacion() { return ubicacion; }
+    public void setUbicacion(String ubicacion) { this.ubicacion = ubicacion; }
+
+    // Getter & Setter "Equipamiento 'Espacio'"
+    public String getEquipamiento() { return equipamiento; }
+    public void setEquipamiento(String equipamiento) { this.equipamiento = equipamiento; }
+
     // Getter & Setter "Capacidad 'Espacio'"
     public int getCapacidad() { return capacidad; }
     public void setCapacidad(int capacidad) { this.capacidad = capacidad; }
 
     // Getter & Setter "Disponibilidad 'Espacio'"
-    public boolean isDisponible() { return disponible; }
-    public void setDisponible(boolean disponible) { this.disponible = disponible; }
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
 
     @Override
     public String toString() {
-        return "ID Espacio: " + id +
+        return "ID Espacio: " + idEspacio +
                 " | Nombre: " + nombre +
                 " | Tipo: " + tipo +
+                " | Ubicación: " + ubicacion +
                 " | Capacidad: " + capacidad +
-                " | Disponibilidad: " + disponible;
+                " | Disponibilidad: " + estado;
     }
 }

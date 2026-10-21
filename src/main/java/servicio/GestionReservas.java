@@ -48,9 +48,9 @@ public class GestionReservas {
         ArrayList<Reserva> resultado = new ArrayList<>();
 
         for (Reserva reserva : reservas){
-            if (reserva.getProfesor() != null &&
-                    reserva.getProfesor().getIdProfesor() != null &&
-                    reserva.getProfesor().getIdProfesor().equals(id)){
+            if (reserva.getIdProfesor() != null &&
+                    reserva.getIdProfesor().getIdProfesor() != null &&
+                    reserva.getIdProfesor().getIdProfesor().equals(id)){
                 resultado.add(reserva);
             }
         }
@@ -61,9 +61,9 @@ public class GestionReservas {
         ArrayList<Reserva> resultado = new ArrayList<>();
 
         for (Reserva reserva : reservas){
-            if (reserva.getEspacio() != null &&
-                    reserva.getEspacio().getIdEspacio() != null &&
-                    reserva.getEspacio().getIdEspacio().equals(id)){
+            if (reserva.getIdEspacio() != null &&
+                    reserva.getIdEspacio().getIdEspacio() != null &&
+                    reserva.getIdEspacio().getIdEspacio().equals(id)){
                 resultado.add(reserva);
             }
         }
@@ -85,10 +85,10 @@ public class GestionReservas {
     }
 
     private void comprobarDisponibilidad(Reserva nuevo) {
-        Espacio espacio = nuevo.getEspacio();
-        Profesor profesor = nuevo.getProfesor();
+        Espacio espacio = nuevo.getIdEspacio();
+        Profesor profesor = nuevo.getIdProfesor();
 
-        if (!espacio.isDisponible()) {
+        if (espacio.getEstado().equals("NO_DISPONIBLE")) {
             throw new IllegalArgumentException("El espacio no está disponible");
         }
 
@@ -111,13 +111,13 @@ public class GestionReservas {
             }
 
             boolean mismoEspacio =
-                    existente.getEspacio() != null
-                            && existente.getEspacio().getIdEspacio()
+                    existente.getIdEspacio() != null
+                            && existente.getIdEspacio().getIdEspacio()
                             .equals(espacio.getIdEspacio());
 
             boolean mismoProfesor =
-                    existente.getProfesor() != null
-                            && existente.getProfesor().getIdProfesor()
+                    existente.getIdProfesor() != null
+                            && existente.getIdProfesor().getIdProfesor()
                             .equals(profesor.getIdProfesor());
 
             boolean seSolapan =
@@ -142,8 +142,8 @@ public class GestionReservas {
         if (reserva.getFecha() == null){ throw new IllegalArgumentException("La fecha es obligatoria"); }
         if (reserva.getHoraInicio() == null || reserva.getHoraFin() == null){ throw new IllegalArgumentException("Las horas son obligatorias"); }
         if (reserva.getHoraFin().isAfter(reserva.getHoraInicio())){ throw new IllegalArgumentException("La hora final debe ser posterior a la inicial"); }
-        if (reserva.getProfesor() == null){ throw new IllegalArgumentException("Debe indicarse un profesor"); }
-        if (reserva.getEspacio() == null){ throw new IllegalArgumentException("Debe indicarse un espacio"); }
+        if (reserva.getIdProfesor() == null){ throw new IllegalArgumentException("Debe indicarse un profesor"); }
+        if (reserva.getIdEspacio() == null){ throw new IllegalArgumentException("Debe indicarse un espacio"); }
         if (reserva.getNumAsistentes() <= 0){ throw new IllegalArgumentException("Debe haber al menos un asistente"); }
         if (reserva.getEstado() == null){ throw new IllegalArgumentException("Debe indicarse el estado de la reserva"); }
     }
