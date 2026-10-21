@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import dao.ReservaDAO;
 import dao.fjson.adaptadoresJSON.AdaptadorLocalDate;
 import dao.fjson.adaptadoresJSON.AdaptadorLocalTime;
+import dao.fjson.adaptadoresJSON.DeserializadorReserva;
 import modelo.Reserva;
 
 import java.io.FileReader;
@@ -25,14 +26,16 @@ public class ReservaDAOFJS implements ReservaDAO {
     @Override
     public ArrayList<Reserva> leerFichero(){
 
-        try (FileReader flujoDatos = new FileReader(ruta)){
-
-            Gson gson = new GsonBuilder()
-                .registerTypeAdapter(
+        Gson gson = new GsonBuilder()
+            .registerTypeAdapter(
                     LocalTime.class, new AdaptadorLocalTime())
-                .registerTypeAdapter(
+            .registerTypeAdapter(
                     LocalDate.class, new AdaptadorLocalDate())
-                .create();
+            .registerTypeAdapter(
+                    Reserva.class, new DeserializadorReserva())
+            .create();
+
+        try (FileReader flujoDatos = new FileReader(ruta)){
 
             Type tipoLista =
                 new TypeToken<ArrayList<Reserva>>(){}.getType();

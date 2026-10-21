@@ -17,6 +17,9 @@ public class Departamento implements Serializable {
         this.nombre = nombre;
     }
 
+    public Departamento(String idDeptoStr) {
+    }
+
     // Getter & Setter "ID 'Departamento'"
     public String getIdDepartamento() { return idDepartamento; }
     public void setIdDepartamento(String id) { this.idDepartamento = id; }

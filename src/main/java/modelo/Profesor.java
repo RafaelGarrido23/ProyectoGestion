@@ -6,26 +6,30 @@ public class Profesor implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String id;
+    private String idProfesor;
     private String nombre;
     private String apellidos;
     private String email;
     private Departamento idDepartamento;
 
-    public Profesor() {
+    public Profesor(String idProfesor) {
+        this.idProfesor = idProfesor;
     }
 
-    public Profesor(String id, String nombre, String apellidos, String email, Departamento idDepartamento) {
-        this.id = id;
+    public Profesor(String idProfesor, String nombre, String apellidos, String email, Departamento idDepartamento) {
+        this.idProfesor = idProfesor;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.email = email;
         this.idDepartamento = idDepartamento;
     }
 
+    public Profesor() {
+    }
+
     // Getter & Setter "ID 'Profesor'"
-    public String getIdProfesor() { return id; }
-    public void setIdProfesor(String id) { this.id = id; }
+    public String getIdProfesor() { return idProfesor; }
+    public void setIdProfesor(String id) { this.idProfesor = id; }
 
     // Getter & Setter "Nombre 'Profesor'"
     public String getNombre() { return nombre; }
@@ -45,7 +49,7 @@ public class Profesor implements Serializable {
 
     @Override
     public String toString() {
-        return "ID Profesor: " + id +
+        return "ID Profesor: " + idProfesor +
                 " | Nombre: " + nombre +
                 " | Apellidos: " + apellidos +
                 " | Email: " + email +

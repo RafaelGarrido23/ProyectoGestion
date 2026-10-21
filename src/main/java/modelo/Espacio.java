@@ -14,7 +14,8 @@ public class Espacio implements Serializable {
     private String equipamiento;
     private String estado;
 
-    public Espacio() {
+    public Espacio(String idEspacio) {
+        this.idEspacio = idEspacio;
     }
 
     public Espacio(String idEspacio, String nombre, String tipo, String ubicacion, int capacidad, String equipamiento, String estado) {

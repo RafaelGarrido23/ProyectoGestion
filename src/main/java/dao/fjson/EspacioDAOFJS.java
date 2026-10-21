@@ -21,10 +21,11 @@ public class EspacioDAOFJS implements EspacioDAO {
     @Override
     public ArrayList<Espacio> leerFichero(){
 
+        Gson gson = new Gson();
+
         try (FileReader flujoDatos =
                      new FileReader(ruta)){
 
-            Gson gson = new Gson();
             Type tipoLista =
                     new TypeToken<ArrayList<Espacio>>(){}.getType();
             ArrayList<Espacio> espacios =

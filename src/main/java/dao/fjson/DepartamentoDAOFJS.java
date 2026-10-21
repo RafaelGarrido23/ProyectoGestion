@@ -18,10 +18,11 @@ public class DepartamentoDAOFJS implements DepartamentoDAO {
     @Override
     public ArrayList<Departamento> leerFichero(){
 
+        Gson gson = new Gson();
+
         try (FileReader flujoDatos =
                 new FileReader(ruta)){
 
-            Gson gson = new Gson();
             Type tipoLista =
                 new TypeToken<ArrayList<Departamento>>(){}.getType();
             ArrayList<Departamento> departamentos =

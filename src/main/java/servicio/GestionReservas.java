@@ -44,26 +44,24 @@ public class GestionReservas {
         return reserva;
     }
 
-    public ArrayList<Reserva> consultarPorProfesor(String id){
+    public ArrayList<Reserva> consultarPorProfesor(Profesor id){
         ArrayList<Reserva> resultado = new ArrayList<>();
 
         for (Reserva reserva : reservas){
             if (reserva.getIdProfesor() != null &&
-                    reserva.getIdProfesor().getIdProfesor() != null &&
-                    reserva.getIdProfesor().getIdProfesor().equals(id)){
+                    reserva.getIdProfesor().equals(id)){
                 resultado.add(reserva);
             }
         }
         return resultado;
     }
 
-    public ArrayList<Reserva> consultarPorEspacio(String id){
+    public ArrayList<Reserva> consultarPorEspacio(Espacio id){
         ArrayList<Reserva> resultado = new ArrayList<>();
 
         for (Reserva reserva : reservas){
             if (reserva.getIdEspacio() != null &&
-                    reserva.getIdEspacio().getIdEspacio() != null &&
-                    reserva.getIdEspacio().getIdEspacio().equals(id)){
+                    reserva.getIdEspacio().equals(id)){
                 resultado.add(reserva);
             }
         }
@@ -77,18 +75,18 @@ public class GestionReservas {
             throw new IllegalArgumentException("La reserva no existe");
         }
 
-        if (reserva.getEstado() == EstadoReserva.Cancelada) {
+        if (reserva.getEstado() == EstadoReserva.CANCELADA) {
             throw new IllegalArgumentException("La reserva ya está cancelada");
         }
 
-        reserva.setEstado(EstadoReserva.Cancelada);
+        reserva.setEstado(EstadoReserva.CANCELADA);
     }
 
     private void comprobarDisponibilidad(Reserva nuevo) {
         Espacio espacio = nuevo.getIdEspacio();
         Profesor profesor = nuevo.getIdProfesor();
 
-        if (espacio.getEstado().equals("NO_DISPONIBLE")) {
+        if (nuevo.getEstado().equals(EstadoReserva.CONFIRMADA)) {
             throw new IllegalArgumentException("El espacio no está disponible");
         }
 
@@ -101,7 +99,7 @@ public class GestionReservas {
 
             // Las reservas canceladas no bloquean horarios
             if (existente.getEstado() ==
-                    EstadoReserva.Cancelada) {
+                    EstadoReserva.CANCELADA) {
                 continue;
             }
 
