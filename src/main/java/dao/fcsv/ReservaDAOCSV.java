@@ -1,4 +1,105 @@
 package dao.fcsv;
 
-public class ReservaDAOCSV {
+import dao.ReservaDAO;
+import modelo.Espacio;
+import modelo.EstadoReserva;
+import modelo.Profesor;
+import modelo.Reserva;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+
+public class ReservaDAOCSV implements ReservaDAO {
+
+    private final String ruta;
+
+    public ReservaDAOCSV(String ruta) {
+        this.ruta = ruta;
+    }
+
+    @Override
+    public ArrayList<Reserva> leerFichero() {
+        ArrayList<Reserva> reservas = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                if (linea.trim().isEmpty()) continue;
+                String[] datos = linea.split(";");
+
+                if (datos.length >= 8) {
+                    String idReserva = datos[0].trim();
+                    LocalDate fecha = LocalDate.parse(datos[1].trim());
+                    LocalTime horaInicio = LocalTime.parse(datos[2].trim());
+                    LocalTime horaFin = LocalTime.parse(datos[3].trim());
+
+                    String estadoStr = datos[4].trim().toUpperCase();
+                    EstadoReserva estado = EstadoReserva.Confirmado;
+                    if (estadoStr.contains("CANCEL")) {
+                        estado = EstadoReserva.Cancelado;
+                    } else if (estadoStr.contains("FIN")) {
+                        estado = EstadoReserva.Finalizado;
+                    }
+
+                    String idProfesor;
+                    String idEspacio;
+                    int numAsistentes;
+
+                    if (datos.length >= 9) {
+                        idProfesor = datos[6].trim();
+                        idEspacio = datos[7].trim();
+                        numAsistentes = Integer.parseInt(datos[8].trim());
+                    } else {
+                        idProfesor = datos[5].trim();
+                        idEspacio = datos[6].trim();
+                        numAsistentes = Integer.parseInt(datos[7].trim());
+                    }
+
+                    Profesor prof = new Profesor(idProfesor);
+                    Espacio esp = new Espacio(idEspacio);
+
+                    Reserva reserva = new Reserva(idReserva, fecha, horaInicio, horaFin, estado, prof, esp, numAsistentes);
+                    reservas.add(reserva);
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error al leer el fichero CSV de reservas: " + e.getMessage());
+        }
+        return reservas;
+    }
+
+    @Override
+    public void escribirFichero(ArrayList<Reserva> reservas) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ruta))) {
+            for (Reserva res : reservas) {
+                String idProf = res.getIdProfesor() != null ? res.getIdProfesor().getIdProfesor() : "";
+                String idEsp = res.getIdEspacio() != null ? res.getIdEspacio().getIdEspacio() : "";
+
+                String estadoStr = "CONFIRMADA";
+                if (res.getEstado() == EstadoReserva.Cancelado) {
+                    estadoStr = "CANCELADA";
+                } else if (res.getEstado() == EstadoReserva.Finalizado) {
+                    estadoStr = "FINALIZADA";
+                }
+
+                bw.write(res.getIdReserva() + ";" +
+                        res.getFecha() + ";" +
+                        res.getHoraInicio() + ";" +
+                        res.getHoraFin() + ";" +
+                        estadoStr + ";" +
+                        "Reserva" + ";" +
+                        idProf + ";" +
+                        idEsp + ";" +
+                        res.getNumAsistentes());
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("Error al escribir el fichero CSV de reservas: " + e.getMessage());
+        }
+    }
 }

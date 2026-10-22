@@ -16,6 +16,10 @@ import modelo.Departamento;
 import modelo.Espacio;
 import modelo.Profesor;
 import modelo.Reserva;
+import dao.fcsv.DepartamentoDAOCSV;
+import dao.fcsv.EspacioDAOCSV;
+import dao.fcsv.ProfesorDAOCSV;
+import dao.fcsv.ReservaDAOCSV;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +37,7 @@ public class CentroEducativo {
     private ArrayList<Reserva> reservas = new ArrayList<>();
 
 
-    /* Constructor CSV. Hace falta implementar métodos leerFichero y escribirFichero en las clases DAOCSV para que funcione.
+    /* Constructor CSV. Hace falta implementar métodos leerFichero y escribirFichero en las clases DAOCSV para que funcione. */
 
     public CentroEducativo(DepartamentoDAOCSV departamentoDAOCSV, ProfesorDAOCSV profesorDAOCSV, EspacioDAOCSV espacioDAOCSV, ReservaDAOCSV reservaDAOCSV) throws IOException {
         this.departamentoDAO = departamentoDAOCSV;
@@ -43,7 +47,8 @@ public class CentroEducativo {
         leerTodo();
     }
 
-    */
+
+
 
     public CentroEducativo(DepartamentoDAOFB departamentoDAOFB, ProfesorDAOFB profesorDAOFB, EspacioDAOFB espacioDAOFB, ReservaDAOFB reservaDAOFB) throws IOException {
         this.departamentoDAO = departamentoDAOFB;
