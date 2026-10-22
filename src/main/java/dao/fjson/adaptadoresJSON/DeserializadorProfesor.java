@@ -6,10 +6,12 @@ import modelo.Profesor;
 
 import java.lang.reflect.Type;
 
-public class DeserializadorProfesor implements JsonDeserializer<Profesor> {
+public class DeserializadorProfesor
+        implements JsonDeserializer<Profesor> {
 
     @Override
-    public Profesor deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public Profesor deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
 
         JsonObject jsonObject = json.getAsJsonObject();
         Profesor profesor = new Profesor();
@@ -20,8 +22,8 @@ public class DeserializadorProfesor implements JsonDeserializer<Profesor> {
         profesor.setEmail(jsonObject.get("email").getAsString());
 
         if (jsonObject.has("idDepartamento")) {
-            String idDeptoStr = jsonObject.get("idDepartamento").getAsString();
-            profesor.setIdDepartamento(new Departamento(idDeptoStr));
+            String idDepartamentoStr = jsonObject.get("idDepartamento").getAsString();
+            profesor.setIdDepartamento(new Departamento(idDepartamentoStr));
         }
 
         return profesor;

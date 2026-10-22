@@ -4,9 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import dao.ReservaDAO;
-import dao.fjson.adaptadoresJSON.*;
-import modelo.Espacio;
-import modelo.Profesor;
+import dao.fjson.adaptadoresJSON.AdaptadorLocalDate;
+import dao.fjson.adaptadoresJSON.AdaptadorLocalTime;
+import dao.fjson.adaptadoresJSON.DeserializadorReserva;
 import modelo.Reserva;
 
 import java.io.FileReader;
@@ -27,18 +27,22 @@ public class ReservaDAOFJS implements ReservaDAO {
     public ArrayList<Reserva> leerFichero(){
 
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(
-                        LocalTime.class, new AdaptadorLocalTime())
-                .registerTypeAdapter(
-                        LocalDate.class, new AdaptadorLocalDate())
-                .registerTypeAdapter(
-                        Reserva.class, new DeserializadorReserva())
-                .create();
+            .registerTypeAdapter(
+                    LocalTime.class, new AdaptadorLocalTime())
+            .registerTypeAdapter(
+                    LocalDate.class, new AdaptadorLocalDate())
+            .registerTypeAdapter(
+                    Reserva.class, new DeserializadorReserva())
+            .create();
 
         try (FileReader flujoDatos = new FileReader(ruta)){
 
-            Type tipoLista = new TypeToken<ArrayList<Reserva>>(){}.getType();
-            ArrayList<Reserva> reservas = gson.fromJson(flujoDatos, tipoLista);
+            Type tipoLista =
+                new TypeToken<ArrayList<Reserva>>(){}.getType();
+
+            ArrayList<Reserva> reservas =
+                gson.fromJson(flujoDatos, tipoLista);
+
             return reservas;
 
         } catch (IOException e) {
@@ -51,17 +55,14 @@ public class ReservaDAOFJS implements ReservaDAO {
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(
-                        Profesor.class, new SerializadorProfesor())
-                .registerTypeAdapter(
-                        Espacio.class, new SerializadorEspacio())
-                .registerTypeAdapter(
                         LocalTime.class, new AdaptadorLocalTime())
                 .registerTypeAdapter(
                         LocalDate.class, new AdaptadorLocalDate())
-                .setPrettyPrinting()
+                .registerTypeAdapter(
+                        Reserva.class, new DeserializadorReserva())
                 .create();
 
-        try (FileWriter flujoDatos = new FileWriter(ruta);) {
+        try(FileWriter flujoDatos = new FileWriter(ruta);) {
             gson.toJson(reservas, flujoDatos);
         } catch (IOException e) {
             throw new RuntimeException("Error al escribir las reservas", e);

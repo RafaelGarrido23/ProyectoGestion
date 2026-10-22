@@ -1,7 +1,7 @@
 [
   {
     "idReserva": "R001",
-    "fecha": "2026-10-20",
+    "fecha": "20/10/2026",
     "horaInicio": "10:00",
     "horaFin": "11:00",
     "estado": "Confirmado",
@@ -11,7 +11,7 @@
   },
   {
     "idReserva": "R002",
-    "fecha": "2026-10-21",
+    "fecha": "21/10/2026",
     "horaInicio": "12:00",
     "horaFin": "13:00",
     "estado": "Confirmado",

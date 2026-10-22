@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import dao.ProfesorDAO;
 import dao.fjson.adaptadoresJSON.DeserializadorProfesor;
-import dao.fjson.adaptadoresJSON.SerializadorDepartamento;
 import modelo.Departamento;
 import modelo.Profesor;
 
@@ -25,14 +24,18 @@ public class ProfesorDAOFJS implements ProfesorDAO {
     public ArrayList<Profesor> leerFichero(){
 
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(
-                        Profesor.class, new DeserializadorProfesor())
-                .create();
+            .registerTypeAdapter(
+                    Profesor.class, new DeserializadorProfesor())
+            .create();
 
-        try (FileReader flujoDatos = new FileReader(ruta)){
+        try (FileReader flujoDatos =
+                     new FileReader(ruta)){
 
-            Type tipoLista = new TypeToken<ArrayList<Profesor>>(){}.getType();
-            ArrayList<Profesor> profesores = gson.fromJson(flujoDatos, tipoLista);
+            Type tipoLista =
+                    new TypeToken<ArrayList<Profesor>>(){}.getType();
+            ArrayList<Profesor> profesores =
+                    gson.fromJson(flujoDatos, tipoLista);
+
             return profesores;
 
         } catch (IOException e) {
@@ -45,11 +48,10 @@ public class ProfesorDAOFJS implements ProfesorDAO {
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(
-                        Departamento.class, new SerializadorDepartamento())
-                .setPrettyPrinting()
+                        Profesor.class, new DeserializadorProfesor())
                 .create();
 
-        try (FileWriter flujoDatos = new FileWriter(ruta);) {
+        try(FileWriter flujoDatos = new FileWriter(ruta);) {
             gson.toJson(profesores, flujoDatos);
         } catch (IOException e) {
             throw new RuntimeException("Error al escribir las reservas", e);

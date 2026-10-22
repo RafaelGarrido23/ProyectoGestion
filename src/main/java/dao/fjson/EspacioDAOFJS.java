@@ -23,10 +23,14 @@ public class EspacioDAOFJS implements EspacioDAO {
 
         Gson gson = new Gson();
 
-        try (FileReader flujoDatos = new FileReader(ruta)){
+        try (FileReader flujoDatos =
+                     new FileReader(ruta)){
 
-            Type tipoLista = new TypeToken<ArrayList<Espacio>>(){}.getType();
-            ArrayList<Espacio> espacios = gson.fromJson(flujoDatos, tipoLista);
+            Type tipoLista =
+                    new TypeToken<ArrayList<Espacio>>(){}.getType();
+            ArrayList<Espacio> espacios =
+                    gson.fromJson(flujoDatos, tipoLista);
+
             return espacios;
 
         } catch (IOException e) {
@@ -39,7 +43,7 @@ public class EspacioDAOFJS implements EspacioDAO {
 
         Gson gson = new Gson();
 
-        try (FileWriter flujoDatos = new FileWriter(ruta);) {
+        try(FileWriter flujoDatos = new FileWriter(ruta);) {
             gson.toJson(espacios, flujoDatos);
         } catch (IOException e) {
             throw new RuntimeException("Error al escribir las reservas", e);

@@ -1,26 +1,30 @@
 package dao.fjson.adaptadoresJSON;
 
-import com.google.gson.*;
+import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
-public class AdaptadorLocalTime implements JsonSerializer<LocalTime>, JsonDeserializer<LocalTime> {
-
-    private static final DateTimeFormatter formateador = DateTimeFormatter.ofPattern("HH:mm");
+public class AdaptadorLocalTime extends TypeAdapter<LocalTime> {
 
     @Override
-    public LocalTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return LocalTime.parse(json.getAsString(), formateador);
+    public LocalTime read(JsonReader in) throws IOException {
+        if (in.peek() == JsonToken.NULL) {
+            in.nextNull();
+            return null;
+        }
+        return LocalTime.parse(in.nextString());
     }
 
     @Override
-    public JsonElement serialize(LocalTime src, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonPrimitive(src.format(formateador));
+    public void write(JsonWriter out, LocalTime hora) throws IOException {
+        if (hora == null) {
+            out.nullValue();
+        } else {
+            out.value(hora.toString());
+        }
     }
 }

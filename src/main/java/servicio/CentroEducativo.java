@@ -12,10 +12,7 @@ import dao.fjson.DepartamentoDAOFJS;
 import dao.fjson.EspacioDAOFJS;
 import dao.fjson.ProfesorDAOFJS;
 import dao.fjson.ReservaDAOFJS;
-import modelo.Departamento;
-import modelo.Espacio;
-import modelo.Profesor;
-import modelo.Reserva;
+import modelo.*;
 import dao.fcsv.DepartamentoDAOCSV;
 import dao.fcsv.EspacioDAOCSV;
 import dao.fcsv.ProfesorDAOCSV;
@@ -140,7 +137,12 @@ public class CentroEducativo {
     }
 
 
+
+    //***********************************************
+    //
     // MÉTODOS DE GESTIÓN DE DEPARTAMENTOS
+    //
+    //***********************************************
 
     public void altaDepartamento(Departamento departamento){
         validarDepartamento(departamento);
@@ -156,22 +158,36 @@ public class CentroEducativo {
         validarDepartamento(modificado);
 
         Departamento departamento = buscarDepartamentoPorId(modificado.getIdDepartamento());
-
-        if (departamento == null){
-            throw new IllegalArgumentException("El departamento no existe");
-        }
-
         departamento.setNombre(departamento.getNombre());
     }
 
     public void bajaDepartamento(String id){
-        Departamento departamento = buscarDepartamentoPorId(id);
 
-        if (departamento == null){
-            throw new IllegalArgumentException("El departamento no existe");
+        if (id == null) {
+            throw new IllegalArgumentException("El ID del departamento no puede ser nulo.");
         }
 
-        departamentos.remove(departamento);
+        String idLimpio = id.trim();
+
+        // Verificar si existen profesores en el departamento
+        boolean tieneProfesores = profesores.stream()
+                .anyMatch(profesor -> {
+                    String idProfDept = profesor.getIdDepartamento().getIdDepartamento();
+                    return idProfDept != null && idProfDept.trim().equalsIgnoreCase(idLimpio);
+                });
+
+        // Lanzar la excepción si hay profesores vinculados
+        if (tieneProfesores) {
+            throw new IllegalArgumentException("No se puede dar de baja: El departamento seleccionado tiene profesores asignados.");
+        }
+
+        // Proceder con la eliminación si la comprobación anterior fue exitosa
+        Departamento departamento = buscarDepartamentoPorId(idLimpio);
+        if (departamento != null) {
+            departamentos.remove(departamento);
+        } else {
+            throw new IllegalArgumentException("El departamento con ID '" + idLimpio + "' no existe.");
+        }
     }
 
     public ArrayList<Departamento> consultarDepartamentos(){
@@ -180,10 +196,6 @@ public class CentroEducativo {
 
     public Departamento consultarDepartamento(String id){
         Departamento departamento = buscarDepartamentoPorId(id);
-
-        if (departamento == null){
-            throw new IllegalArgumentException("El departamento no existe");
-        }
 
         return departamento;
     }
@@ -204,7 +216,12 @@ public class CentroEducativo {
     }
 
 
+
+    //***********************************************
+    //
     // MÉTODOS DE GESTIÓN DE PROFESORES
+    //
+    //***********************************************
 
     public void altaProfesor(Profesor profesor){
         validarProfesor(profesor);
@@ -221,10 +238,6 @@ public class CentroEducativo {
 
         Profesor profesor = buscarProfesorPorId(modificado.getIdProfesor());
 
-        if (profesor == null){
-            throw new IllegalArgumentException("El profesor no existe");
-        }
-
         profesor.setNombre(profesor.getNombre());
         profesor.setApellidos(profesor.getApellidos());
         profesor.setEmail(profesor.getEmail());
@@ -233,10 +246,6 @@ public class CentroEducativo {
 
     public void bajaProfesor(String id){
         Profesor profesor = buscarProfesorPorId(id);
-
-        if (profesor == null){
-            throw new IllegalArgumentException("El profesor no existe");
-        }
 
         profesores.remove(profesor);
     }
@@ -247,10 +256,6 @@ public class CentroEducativo {
 
     public Profesor consultarProfesor(String id){
         Profesor profesor = buscarProfesorPorId(id);
-
-        if (profesor == null){
-            throw new IllegalArgumentException("El profesor no existe");
-        }
 
         return profesor;
     }
@@ -287,7 +292,13 @@ public class CentroEducativo {
     }
 
 
+
+    //***********************************************
+    //
     // MÉTODOS DE GESTIÓN DE ESPACIOS
+    //
+    //***********************************************
+
 
     public void altaEspacio(Espacio espacio){
         validarEspacio(espacio);
@@ -304,10 +315,6 @@ public class CentroEducativo {
 
         Espacio espacio = buscarEspacioPorId(modificado.getIdEspacio());
 
-        if (espacio == null){
-            throw new IllegalArgumentException("El espacio no existe");
-        }
-
         espacio.setNombre(espacio.getNombre());
         espacio.setTipo(espacio.getTipo());
         espacio.setCapacidad(espacio.getCapacidad());
@@ -315,10 +322,6 @@ public class CentroEducativo {
 
     public void bajaEspacio(String id){
         Espacio espacio = buscarEspacioPorId(id);
-
-        if (espacio == null){
-            throw new IllegalArgumentException("El espacio no existe");
-        }
 
         espacios.remove(espacio);
     }
@@ -330,19 +333,11 @@ public class CentroEducativo {
     public Espacio consultarEspacio(String id){
         Espacio espacio = buscarEspacioPorId(id);
 
-        if (espacio == null){
-            throw new IllegalArgumentException("El espacio no existe");
-        }
-
         return espacio;
     }
 
     public void cambiarDisponibilidad(String id){
         Espacio espacio = buscarEspacioPorId(id);
-
-        if (espacio == null){
-            throw new IllegalArgumentException("El espacio no existe");
-        }
 
         if (espacio.getEstado().equals("DISPONIBLE")) espacio.setEstado("NO_DISPONIBLE");
         else espacio.setEstado("DISPONIBLE");
@@ -354,13 +349,149 @@ public class CentroEducativo {
         if (espacio.getNombre() == null || espacio.getNombre().trim().isEmpty()){ throw new IllegalArgumentException("El nombre es obligatorio"); }
         if (espacio.getTipo() == null || espacio.getTipo().trim().isEmpty()){ throw new IllegalArgumentException("El tipo es obligatorio"); }
         if (espacio.getCapacidad() <= 0){ throw new IllegalArgumentException("La capacidad debe ser mayor que 0"); }
-
     }
 
     private Espacio buscarEspacioPorId(String id){
         for (Espacio espacio : espacios){
             if (espacio.getIdEspacio().equals(id)){
                 return espacio;
+            }
+        }
+        return null;
+    }
+
+
+
+    //***********************************************
+    //
+    // MÉTODOS DE GESTIÓN DE RESERVAS
+    //
+    //***********************************************
+
+    public void crearReserva(Reserva reserva){
+        validarReserva(reserva);
+
+        if ((buscarReservaPorId(reserva.getIdReserva()) != null)){
+            throw new IllegalArgumentException("Ya existe una reserva con ese ID");
+        }
+
+        comprobarDisponibilidad(reserva);
+
+        reservas.add(reserva);
+    }
+
+    public ArrayList<Reserva> consultarReservas(){
+        return new ArrayList<>(reservas);
+    }
+
+    public Reserva consultarReserva(String id){
+        Reserva reserva = buscarReservaPorId(id);
+
+        return reserva;
+    }
+
+    public ArrayList<Reserva> consultarPorProfesor(Profesor id){
+        ArrayList<Reserva> resultado = new ArrayList<>();
+
+        for (Reserva reserva : reservas){
+            if (reserva.getIdProfesor() != null &&
+                    reserva.getIdProfesor().equals(id)){
+                resultado.add(reserva);
+            }
+        }
+        return resultado;
+    }
+
+    public ArrayList<Reserva> consultarPorEspacio(Espacio id){
+        ArrayList<Reserva> resultado = new ArrayList<>();
+
+        for (Reserva reserva : reservas){
+            if (reserva.getIdEspacio() != null &&
+                    reserva.getIdEspacio().equals(id)){
+                resultado.add(reserva);
+            }
+        }
+        return resultado;
+    }
+
+    public void cancelarReserva(String id) {
+        Reserva reserva = buscarReservaPorId(id);
+
+        if (reserva.getEstado() == EstadoReserva.Cancelado) {
+            throw new IllegalArgumentException("La reserva ya está cancelada");
+        }
+
+        reserva.setEstado(EstadoReserva.Cancelado);
+    }
+
+    private void comprobarDisponibilidad(Reserva nuevo) {
+        Espacio espacio = buscarEspacioPorId(nuevo.getIdEspacio().getIdEspacio());
+        Profesor profesor = buscarProfesorPorId(nuevo.getIdProfesor().getIdProfesor());
+
+        if (!espacio.getEstado().equals("DISPONIBLE")) {
+            throw new IllegalArgumentException("El espacio no está disponible");
+        }
+
+        if (nuevo.getNumAsistentes() > espacio.getCapacidad()) {
+            throw new IllegalArgumentException(
+                    "Se supera la capacidad del espacio");
+        }
+
+        for (Reserva existente : reservas) {
+
+            // Las reservas canceladas no bloquean horarios
+            if (existente.getEstado() ==
+                    EstadoReserva.Cancelado) {
+                continue;
+            }
+
+            // Comparan reservas del mismo día
+            if (!existente.getFecha().equals(nuevo.getFecha())) {
+                continue;
+            }
+
+            boolean mismoEspacio =
+                    existente.getIdEspacio() != null
+                            && existente.getIdEspacio().getIdEspacio()
+                            .equals(espacio.getIdEspacio());
+
+            boolean mismoProfesor =
+                    existente.getIdProfesor() != null
+                            && existente.getIdProfesor().getIdProfesor()
+                            .equals(profesor.getIdProfesor());
+
+            boolean seSolapan =
+                    nuevo.getHoraInicio().isBefore(
+                            existente.getHoraFin())
+                            && existente.getHoraInicio().isBefore(
+                            nuevo.getHoraFin());
+
+            if (seSolapan && mismoEspacio) {
+                throw new IllegalArgumentException("El espacio ya tiene una reserva " + "en ese horario");
+            }
+
+            if (seSolapan && mismoProfesor) {
+                throw new IllegalArgumentException("El profesor ya tiene una reserva " + "en ese horario");
+            }
+        }
+    }
+
+    private void validarReserva(Reserva reserva) {
+        if (reserva == null){ throw new IllegalArgumentException("La reserva puede ser nula"); }
+        if (reserva.getIdReserva() == null || reserva.getIdReserva().trim().isEmpty()){ throw new IllegalArgumentException("El ID es obligatorio"); }
+        if (reserva.getFecha() == null){ throw new IllegalArgumentException("La fecha es obligatoria"); }
+        if (reserva.getHoraInicio() == null || reserva.getHoraFin() == null){ throw new IllegalArgumentException("Las horas son obligatorias"); }
+        if (reserva.getHoraInicio().isAfter(reserva.getHoraFin())){ throw new IllegalArgumentException("La hora final debe ser posterior a la inicial"); }
+        if (reserva.getIdProfesor() == null){ throw new IllegalArgumentException("Debe indicarse un profesor"); }
+        if (reserva.getIdEspacio() == null){ throw new IllegalArgumentException("Debe indicarse un espacio"); }
+        if (reserva.getNumAsistentes() <= 0){ throw new IllegalArgumentException("Debe haber al menos un asistente"); }
+        if (reserva.getEstado() == null){ throw new IllegalArgumentException("Debe indicarse el estado de la reserva"); }
+    }
+
+    private Reserva buscarReservaPorId(String id){
+        for (Reserva reserva : reservas){
+            if (reserva.getIdReserva().equals(id)){
+                return reserva;
             }
         }
         return null;

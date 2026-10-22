@@ -1,27 +1,35 @@
 package dao.fjson.adaptadoresJSON;
 
-import com.google.gson.*;
+import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-public class AdaptadorLocalDate implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
+public class AdaptadorLocalDate extends TypeAdapter<LocalDate> {
 
-    private static final DateTimeFormatter formateador = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter FORMATO =
+            DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @Override
-    public LocalDate deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return LocalDate.parse(json.getAsString(), formateador);
+    public LocalDate read(JsonReader in) throws IOException {
+        if (in.peek() == JsonToken.NULL) {
+            in.nextNull();
+            return null;
+        }
+
+        return LocalDate.parse(in.nextString(), FORMATO);
     }
 
     @Override
-    public JsonElement serialize(LocalDate src, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonPrimitive(src.format(formateador));
+    public void write(JsonWriter out, LocalDate fecha) throws IOException {
+        if (fecha == null) {
+            out.nullValue();
+        } else {
+            out.value(fecha.format(FORMATO));
+        }
     }
 }

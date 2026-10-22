@@ -1,6 +1,5 @@
 package vista;
-import java.time.LocalTime;
-import modelo.EstadoReserva;
+
 import dao.fcsv.DepartamentoDAOCSV;
 import dao.fcsv.EspacioDAOCSV;
 import dao.fcsv.ProfesorDAOCSV;
@@ -18,14 +17,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import modelo.Departamento;
-import modelo.Espacio;
-import modelo.Profesor;
-import modelo.Reserva;
+import modelo.*;
 import servicio.CentroEducativo;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class MainFX extends Application {
@@ -36,19 +33,10 @@ public class MainFX extends Application {
 
     @Override public void start(Stage stage){
         try{
-            centro = new CentroEducativo(
-                    new DepartamentoDAOCSV("csv/departamento.csv"),
-                    new ProfesorDAOCSV("csv/profesores.csv"),
-                    new EspacioDAOCSV("csv/espacios.csv"),
-                    new ReservaDAOCSV("csv/reserva.csv")
-            );
-        } catch(IOException e){
-            mostrarError("Error al cargar los CSV", e.getMessage());
-            return;
-        }
-        root.setTop(crearMenu());
-        root.setCenter(pantallaInicio());
-        stage.setScene(new Scene(root, 1100, 680));
+           centro=new CentroEducativo(new DepartamentoDAOFJS("json/departamento.json"),new ProfesorDAOFJS("json/profesores.json"),new EspacioDAOFJS("json/espacios.json"),new ReservaDAOFJS("json/reserva.json"));
+        } catch(IOException e){ mostrarError("Error al cargar los CSV",e.getMessage()); return; }
+        root.setTop(crearMenu()); root.setCenter(pantallaInicio());
+        stage.setScene(new Scene(root,1100,680));
         stage.setTitle("Gestión de reservas - Centro Educativo (CSV)");
         stage.show();
     }
@@ -117,48 +105,11 @@ public class MainFX extends Application {
     }
 
     private VBox pantallaAltaProfesor(){
-        TextField id = campo("ID"),
-                nombre = campo("Nombre"),
-                apellidos = campo("Apellidos"),
-                email = campo("Email");
-
-        ComboBox<Departamento> dep = new ComboBox<>(FXCollections.observableArrayList(centro.getDepartamentos()));
-        dep.setMaxWidth(Double.MAX_VALUE);
-
-        Button guardar = new Button("Guardar");
-        guardar.setOnAction(e -> {
-            try {
-                centro.altaProfesor(new Profesor(
-                        id.getText().trim(),
-                        nombre.getText().trim(),
-                        apellidos.getText().trim(), // <-- Asegúrate de hacer el trim() aquí también
-                        email.getText().trim(),
-                        dep.getValue()
-                ));
-                mostrarInfo("Profesor creado.");
-                root.setCenter(pantallaProfesores());
-            } catch(Exception ex) {
-                mostrarError("Error", ex.getMessage());
-            }
-        });
-
-        VBox b = new VBox(10);
-        b.setPadding(new Insets(30));
-        Label t = new Label("NUEVO PROFESOR");
-        t.setStyle("-fx-font-size:22px;-fx-font-weight:bold;");
-
-        // Añadimos explícitamente el label y el campo de apellidos al formulario
-        b.getChildren().addAll(
-                t,
-                new Label("ID"), id,
-                new Label("Nombre"), nombre,
-                new Label("Apellidos"), apellidos, // <-- ¡AQUÍ ESTABA FALTANDO!
-                new Label("Email"), email,
-                new Label("Departamento"), dep,
-                guardar
-        );
-
-        return b;
+        TextField id=campo("ID"),nombre=campo("Nombre"),apellidos=campo("apellidos"),email=campo("Email");
+        ComboBox<Departamento> dep=new ComboBox<>(FXCollections.observableArrayList(centro.getDepartamentos())); dep.setMaxWidth(Double.MAX_VALUE);
+        Button guardar=new Button("Guardar");
+        guardar.setOnAction(e->{try{centro.altaProfesor(new Profesor(id.getText().trim(),nombre.getText().trim(),apellidos.getText(),email.getText().trim(),dep.getValue()));mostrarInfo("Profesor creado.");root.setCenter(pantallaProfesores());}catch(Exception ex){mostrarError("Error",ex.getMessage());}});
+        VBox b=new VBox(10);b.setPadding(new Insets(30));Label t=new Label("NUEVO PROFESOR");t.setStyle("-fx-font-size:22px;-fx-font-weight:bold;");b.getChildren().addAll(t,new Label("ID"),id,new Label("Nombre"),nombre,new Label("Apellidos"),apellidos,new Label("Email"),email,new Label("Departamento"),dep,guardar);return b;
     }
 
     private VBox pantallaEspacios(){
@@ -183,51 +134,9 @@ public class MainFX extends Application {
     }
 
     private VBox pantallaAltaEspacio(){
-        TextField id = campo("ID"),
-                nombre = campo("Nombre"),
-                tipo = campo("Tipo"),
-                ubicacion = campo("Ubicación"),
-                cap = campo("Capacidad"),
-                equip = campo("Equipamiento");
-
-        Button guardar = new Button("Guardar");
-
-        guardar.setOnAction(e -> {
-            try {
-                centro.altaEspacio(new Espacio(
-                        id.getText().trim(),
-                        nombre.getText().trim(),
-                        tipo.getText().trim(),
-                        ubicacion.getText().trim(),
-                        Integer.parseInt(cap.getText().trim()),
-                        equip.getText().trim(),
-                        "DISPONIBLE"
-                ));
-                mostrarInfo("Espacio creado.");
-                root.setCenter(pantallaEspacios());
-            } catch(Exception ex) {
-                mostrarError("Error", ex.getMessage());
-            }
-        });
-
-        VBox b = new VBox(10);
-        b.setPadding(new Insets(30));
-        Label t = new Label("NUEVO ESPACIO");
-        t.setStyle("-fx-font-size:22px;-fx-font-weight:bold;");
-
-        // ¡AQUÍ ESTABA FALTANDO AÑADIR EL BOTÓN "guardar"!
-        b.getChildren().addAll(
-                t,
-                new Label("ID"), id,
-                new Label("Nombre"), nombre,
-                new Label("Tipo"), tipo,
-                new Label("Ubicación"), ubicacion,
-                new Label("Capacidad"), cap,
-                new Label("Equipamiento"), equip,
-                guardar // <-- Añadido aquí
-        );
-
-        return b;
+        TextField id=campo("ID"),nombre=campo("Nombre"),tipo=campo("Tipo"),ubicacion=campo("Ubicación"),cap=campo("Capacidad"),equip=campo("Equipamiento");Button guardar=new Button("Guardar");
+        guardar.setOnAction(e->{try{centro.altaEspacio(new Espacio(id.getText().trim(),nombre.getText().trim(),tipo.getText().trim(),ubicacion.getText(),Integer.parseInt(cap.getText().trim()),equip.getText(),"DISPONIBLE"));mostrarInfo("Espacio creado.");root.setCenter(pantallaEspacios());}catch(Exception ex){mostrarError("Error",ex.getMessage());}});
+        VBox b=new VBox(10);b.setPadding(new Insets(30));Label t=new Label("NUEVO ESPACIO");t.setStyle("-fx-font-size:22px;-fx-font-weight:bold;");b.getChildren().addAll(t,new Label("ID"),id,new Label("Nombre"),nombre,new Label("Tipo"),tipo,new Label("Ubicación"),ubicacion,new Label("Capacidad"),cap,new Label("Equipamiento"),equip);return b;
     }
 
     private VBox pantallaReservas(){
@@ -236,7 +145,7 @@ public class MainFX extends Application {
         TableColumn<Reserva,String> fecha=new TableColumn<>("Fecha");fecha.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getFecha().toString()));
         TableColumn<Reserva,String> horario=new TableColumn<>("Horario");horario.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getHoraInicio()+" - "+d.getValue().getHoraFin()));
         TableColumn<Reserva,String> estado=new TableColumn<>("Estado");estado.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getEstado().toString()));
-        TableColumn<Reserva,String> profesor=new TableColumn<>("Profesor");profesor.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getIdProfesor().getApellidos()));
+        TableColumn<Reserva,String> profesor=new TableColumn<>("Profesor");profesor.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getIdProfesor().getNombre() + " " + d.getValue().getIdProfesor().getApellidos()));
         TableColumn<Reserva,String> espacio=new TableColumn<>("Espacio");espacio.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getIdEspacio().getNombre()));
         TableColumn<Reserva,Number> asistentes=new TableColumn<>("Asistentes");asistentes.setCellValueFactory(d->new SimpleIntegerProperty(d.getValue().getNumAsistentes()));
         tabla.getColumns().addAll(id,fecha,horario,estado,profesor,espacio,asistentes);cargar(tabla,centro.getReservas());
@@ -247,68 +156,19 @@ public class MainFX extends Application {
                 mostrarError("Aviso","Seleccione una reserva.");
                 return;
             }
-            //try{centro.cancelarReserva(r.getId());tabla.refresh();}catch(Exception ex){mostrarError("Error",ex.getMessage());}
+            try{centro.cancelarReserva(r.getIdReserva());tabla.refresh();}catch(Exception ex){mostrarError("Error",ex.getMessage());}
         });
         return contenedor("RESERVAS",tabla,cancelar);
     }
 
     private VBox pantallaNuevaReserva(){
-        TextField id = campo("ID (ej: R003)"),
-                inicio = campo("HH:mm"),
-                fin = campo("HH:mm"),
-                asist = campo("Número de asistentes");
-
-        DatePicker fecha = new DatePicker(LocalDate.now());
-
-        ComboBox<Profesor> profesor = new ComboBox<>(FXCollections.observableArrayList(centro.getProfesores()));
-        ComboBox<Espacio> espacio = new ComboBox<>(FXCollections.observableArrayList(centro.getEspacios()));
-
-        profesor.setMaxWidth(Double.MAX_VALUE);
-        espacio.setMaxWidth(Double.MAX_VALUE);
-
-        Button guardar = new Button("Crear reserva");
-        guardar.setOnAction(e -> {
-            try {
-                // Creamos la reserva validando los tipos correctos (ID como String, EstadoReserva.Confirmado)
-                Reserva nuevaReserva = new Reserva(
-                        id.getText().trim(),
-                        fecha.getValue(),
-                        LocalTime.parse(inicio.getText().trim()),
-                        LocalTime.parse(fin.getText().trim()),
-                        EstadoReserva.Confirmado,
-                        profesor.getValue(),
-                        espacio.getValue(),
-                        Integer.parseInt(asist.getText().trim())
-                );
-
-                // Agregamos la reserva a la lista de reservas del centro y validamos
-                centro.getReservas().add(nuevaReserva);
-
-                mostrarInfo("Reserva creada correctamente.");
-                root.setCenter(pantallaReservas());
-            } catch(Exception ex) {
-                mostrarError("No se puede crear la reserva", ex.getMessage());
-            }
+        TextField id=campo("ID"),inicio=campo("HH:mm"),fin=campo("HH:mm"),asist=campo("Número de asistentes");DatePicker fecha=new DatePicker(LocalDate.now());
+        ComboBox<Profesor> profesor=new ComboBox<>(FXCollections.observableArrayList(centro.getProfesores()));
+        ComboBox<Espacio> espacio=new ComboBox<>(FXCollections.observableArrayList(centro.getEspacios()));profesor.setMaxWidth(Double.MAX_VALUE);espacio.setMaxWidth(Double.MAX_VALUE);
+        Button guardar=new Button("Crear reserva");guardar.setOnAction(e->{
+            try{centro.crearReserva(new Reserva(id.getText().trim(),fecha.getValue(),LocalTime.parse(inicio.getText().trim()), LocalTime.parse(fin.getText().trim()),EstadoReserva.Confirmado,profesor.getValue(),espacio.getValue(),Integer.parseInt(asist.getText().trim())));mostrarInfo("Reserva creada.");root.setCenter(pantallaReservas());}catch(Exception ex){mostrarError("No se puede crear la reserva",ex.getMessage());}
         });
-
-        VBox b = new VBox(10);
-        b.setPadding(new Insets(30));
-        Label t = new Label("NUEVA RESERVA");
-        t.setStyle("-fx-font-size:22px;-fx-font-weight:bold;");
-
-        b.getChildren().addAll(
-                t,
-                new Label("ID"), id,
-                new Label("Fecha"), fecha,
-                new Label("Profesor"), profesor,
-                new Label("Espacio"), espacio,
-                new Label("Hora inicio (HH:mm)"), inicio,
-                new Label("Hora fin (HH:mm)"), fin,
-                new Label("Asistentes"), asist,
-                guardar
-        );
-
-        return b;
+        VBox b=new VBox(10);b.setPadding(new Insets(30));Label t=new Label("NUEVA RESERVA");t.setStyle("-fx-font-size:22px;-fx-font-weight:bold;");b.getChildren().addAll(t,new Label("ID"),id,new Label("Fecha"),fecha,new Label("Profesor"),profesor,new Label("Espacio"),espacio,new Label("Hora inicio (HH:mm)"),inicio,new Label("Hora fin (HH:mm)"),fin,new Label("Asistentes"),asist,guardar);return b;
     }
 
     private <T> void cargar(TableView<T> tabla,java.util.List<T> datos){tabla.setItems(FXCollections.observableArrayList(datos));tabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);}
@@ -316,6 +176,6 @@ public class MainFX extends Application {
     private VBox formulario(String titulo,Control[] controles,String[] etiquetas){VBox b=new VBox(10);b.setPadding(new Insets(30));Label t=new Label(titulo);t.setStyle("-fx-font-size:22px;-fx-font-weight:bold;");b.getChildren().add(t);for(int i=0;i<controles.length;i++){if(i<etiquetas.length)b.getChildren().add(new Label(etiquetas[i]));b.getChildren().add(controles[i]);}return b;}
     private TextField campo(String prompt){TextField f=new TextField();f.setPromptText(prompt);return f;}
     private void guardarDatos(){try{centro.guardarTodo();mostrarInfo("Datos guardados correctamente en csv/dat/json.");}catch(IOException e){mostrarError("Error al guardar",e.getMessage());}}
-    private void mostrarInfo(String m){new Alert(Alert.AlertType.INFORMATION,m,ButtonType.OK).showAndWait();}
-    private void mostrarError(String titulo,String m){new Alert(Alert.AlertType.ERROR,m==null?"Error desconocido":m,ButtonType.OK).showAndWait();}
+    public void mostrarInfo(String m){new Alert(Alert.AlertType.INFORMATION,m,ButtonType.OK).showAndWait();}
+    public void mostrarError(String titulo,String m){new Alert(Alert.AlertType.ERROR,m==null?"Error desconocido":m,ButtonType.OK).showAndWait();}
 }
