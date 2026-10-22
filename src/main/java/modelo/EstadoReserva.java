@@ -1,7 +1,7 @@
 package modelo;
 
 public enum EstadoReserva {
-    CONFIRMADA,
-    CANCELADA,
-    FINALIZADA
+    Confirmada,
+    Cancelada,
+    Finalizada
 }

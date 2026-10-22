@@ -75,18 +75,18 @@ public class GestionReservas {
             throw new IllegalArgumentException("La reserva no existe");
         }
 
-        if (reserva.getEstado() == EstadoReserva.CANCELADA) {
+        if (reserva.getEstado() == EstadoReserva.Cancelada) {
             throw new IllegalArgumentException("La reserva ya está cancelada");
         }
 
-        reserva.setEstado(EstadoReserva.CANCELADA);
+        reserva.setEstado(EstadoReserva.Cancelada);
     }
 
     private void comprobarDisponibilidad(Reserva nuevo) {
         Espacio espacio = nuevo.getIdEspacio();
         Profesor profesor = nuevo.getIdProfesor();
 
-        if (nuevo.getEstado().equals(EstadoReserva.CONFIRMADA)) {
+        if (nuevo.getEstado().equals(EstadoReserva.Confirmada)) {
             throw new IllegalArgumentException("El espacio no está disponible");
         }
 
@@ -99,7 +99,7 @@ public class GestionReservas {
 
             // Las reservas canceladas no bloquean horarios
             if (existente.getEstado() ==
-                    EstadoReserva.CANCELADA) {
+                    EstadoReserva.Cancelada) {
                 continue;
             }
 

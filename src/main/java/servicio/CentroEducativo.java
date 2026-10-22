@@ -37,6 +37,18 @@ public class CentroEducativo {
     private ArrayList<Reserva> reservas = new ArrayList<>();
 
 
+    /*
+
+    public CentroEducativo(DepartamentoDAOCSV departamentoDAOCSV, ProfesorDAOCSV profesorDAOCSV, EspacioDAOCSV espacioDAOCSV, ReservaDAOCSV reservaDAOCSV) throws IOException {
+        this.departamentoDAO = departamentoDAOCSV;
+        this.profesorDAO = profesorDAOCSV;
+        this.espacioDAO = espacioDAOCSV;
+        this.reservaDAO = reservaDAOCSV;
+        leerTodo();
+    }
+
+    */
+
     public CentroEducativo(DepartamentoDAOFB departamentoDAOFB, ProfesorDAOFB profesorDAOFB, EspacioDAOFB espacioDAOFB, ReservaDAOFB reservaDAOFB) throws IOException {
         this.departamentoDAO = departamentoDAOFB;
         this.profesorDAO = profesorDAOFB;
@@ -112,8 +124,7 @@ public class CentroEducativo {
         for (Reserva reserva : reservas) {
 
             if (reserva.getIdProfesor() != null) {
-                String idProfesor =
-                        reserva.getIdProfesor().getIdProfesor();
+                String idProfesor = reserva.getIdProfesor().getIdProfesor();
 
                 for (Profesor profesor : profesores) {
                     if (profesor.getIdProfesor().equals(idProfesor)) {
@@ -124,8 +135,7 @@ public class CentroEducativo {
             }
 
             if (reserva.getIdEspacio() != null) {
-                String idEspacio =
-                        reserva.getIdEspacio().getIdEspacio();
+                String idEspacio = reserva.getIdEspacio().getIdEspacio();
 
                 for (Espacio espacio : espacios) {
                     if (espacio.getIdEspacio().equals(idEspacio)) {
