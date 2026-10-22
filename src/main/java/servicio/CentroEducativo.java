@@ -4,10 +4,6 @@ import dao.DepartamentoDAO;
 import dao.EspacioDAO;
 import dao.ProfesorDAO;
 import dao.ReservaDAO;
-import dao.fcsv.DepartamentoDAOCSV;
-import dao.fcsv.EspacioDAOCSV;
-import dao.fcsv.ProfesorDAOCSV;
-import dao.fcsv.ReservaDAOCSV;
 import dao.fdat.DepartamentoDAOFB;
 import dao.fdat.EspacioDAOFB;
 import dao.fdat.ProfesorDAOFB;
@@ -98,15 +94,6 @@ public class CentroEducativo {
         return reservas;
     }
 
-    private Departamento buscarDepartamentoPorId(String id){
-        for (Departamento departamento : departamentos){
-            if (departamento.getIdDepartamento().equals(id)){
-                return departamento;
-            }
-        }
-        return null;
-    }
-
     private void asociarAProfesores() {
 
         for (Profesor profesor : profesores) {
@@ -145,5 +132,232 @@ public class CentroEducativo {
                 }
             }
         }
+    }
+
+
+    // MÉTODOS DE GESTIÓN DE DEPARTAMENTOS
+
+    public void altaDepartamento(Departamento departamento){
+        validarDepartamento(departamento);
+
+        if ((buscarDepartamentoPorId(departamento.getIdDepartamento()) != null)){
+            throw new IllegalArgumentException("Ya existe un departamento con ese ID");
+        }
+
+        departamentos.add(departamento);
+    }
+
+    public void modificarDepartamento(Departamento modificado){
+        validarDepartamento(modificado);
+
+        Departamento departamento = buscarDepartamentoPorId(modificado.getIdDepartamento());
+
+        if (departamento == null){
+            throw new IllegalArgumentException("El departamento no existe");
+        }
+
+        departamento.setNombre(departamento.getNombre());
+    }
+
+    public void bajaDepartamento(String id){
+        Departamento departamento = buscarDepartamentoPorId(id);
+
+        if (departamento == null){
+            throw new IllegalArgumentException("El departamento no existe");
+        }
+
+        departamentos.remove(departamento);
+    }
+
+    public ArrayList<Departamento> consultarDepartamentos(){
+        return new ArrayList<>(departamentos);
+    }
+
+    public Departamento consultarDepartamento(String id){
+        Departamento departamento = buscarDepartamentoPorId(id);
+
+        if (departamento == null){
+            throw new IllegalArgumentException("El departamento no existe");
+        }
+
+        return departamento;
+    }
+
+    private void validarDepartamento(Departamento departamento) {
+        if (departamento == null){ throw new IllegalArgumentException("El espacio puede ser nulo"); }
+        if (departamento.getIdDepartamento() == null || departamento.getIdDepartamento().trim().isEmpty()){ throw new IllegalArgumentException("El ID es obligatorio"); }
+        if (departamento.getNombre() == null || departamento.getNombre().trim().isEmpty()){ throw new IllegalArgumentException("El nombre es obligatorio"); }
+    }
+
+    private Departamento buscarDepartamentoPorId(String id){
+        for (Departamento departamento : departamentos){
+            if (departamento.getIdDepartamento().equals(id)){
+                return departamento;
+            }
+        }
+        return null;
+    }
+
+
+    // MÉTODOS DE GESTIÓN DE PROFESORES
+
+    public void altaProfesor(Profesor profesor){
+        validarProfesor(profesor);
+
+        if ((buscarProfesorPorId(profesor.getIdProfesor()) != null)){
+            throw new IllegalArgumentException("Ya existe un profesor con ese ID");
+        }
+
+        profesores.add(profesor);
+    }
+
+    public void modificarProfesor(Profesor modificado){
+        validarProfesor(modificado);
+
+        Profesor profesor = buscarProfesorPorId(modificado.getIdProfesor());
+
+        if (profesor == null){
+            throw new IllegalArgumentException("El profesor no existe");
+        }
+
+        profesor.setNombre(profesor.getNombre());
+        profesor.setApellidos(profesor.getApellidos());
+        profesor.setEmail(profesor.getEmail());
+        profesor.setIdDepartamento(profesor.getIdDepartamento());
+    }
+
+    public void bajaProfesor(String id){
+        Profesor profesor = buscarProfesorPorId(id);
+
+        if (profesor == null){
+            throw new IllegalArgumentException("El profesor no existe");
+        }
+
+        profesores.remove(profesor);
+    }
+
+    public ArrayList<Profesor> consultarProfesores(){
+        return new ArrayList<>(profesores);
+    }
+
+    public Profesor consultarProfesor(String id){
+        Profesor profesor = buscarProfesorPorId(id);
+
+        if (profesor == null){
+            throw new IllegalArgumentException("El profesor no existe");
+        }
+
+        return profesor;
+    }
+
+    public ArrayList<Profesor> consultarPorDepartamento(String id){
+        ArrayList<Profesor> resultado = new ArrayList<>();
+
+        for (Profesor profesor : profesores){
+            if (profesor.getIdDepartamento() != null &&
+                    profesor.getIdDepartamento().getIdDepartamento() != null &&
+                    profesor.getIdDepartamento().getIdDepartamento().equals(id)){
+                resultado.add(profesor);
+            }
+        }
+        return resultado;
+    }
+
+    private void validarProfesor(Profesor profesor) {
+        if (profesor == null){ throw new IllegalArgumentException("El profesor puede ser nulo"); }
+        if (profesor.getIdProfesor() == null || profesor.getIdProfesor().trim().isEmpty()){ throw new IllegalArgumentException("El ID es obligatorio"); }
+        if (profesor.getNombre() == null || profesor.getNombre().trim().isEmpty()){ throw new IllegalArgumentException("El nombre es obligatorio"); }
+        if (profesor.getApellidos() == null || profesor.getApellidos().trim().isEmpty()){ throw new IllegalArgumentException("Los apellidos son obligatorios"); }
+        if (profesor.getEmail() == null || profesor.getEmail().trim().isEmpty()){ throw new IllegalArgumentException("El email es obligatorio"); }
+        if (profesor.getIdDepartamento() == null){ throw new IllegalArgumentException("El profesor debe pertenecer a un departamento"); }
+    }
+
+    private Profesor buscarProfesorPorId(String id){
+        for (Profesor profesor : profesores){
+            if (profesor.getIdProfesor().equals(id)){
+                return profesor;
+            }
+        }
+        return null;
+    }
+
+
+    // MÉTODOS DE GESTIÓN DE ESPACIOS
+
+    public void altaEspacio(Espacio espacio){
+        validarEspacio(espacio);
+
+        if ((buscarEspacioPorId(espacio.getIdEspacio()) != null)){
+            throw new IllegalArgumentException("Ya existe un espacio con ese ID");
+        }
+
+        espacios.add(espacio);
+    }
+
+    public void modificarEspacio(Espacio modificado){
+        validarEspacio(modificado);
+
+        Espacio espacio = buscarEspacioPorId(modificado.getIdEspacio());
+
+        if (espacio == null){
+            throw new IllegalArgumentException("El espacio no existe");
+        }
+
+        espacio.setNombre(espacio.getNombre());
+        espacio.setTipo(espacio.getTipo());
+        espacio.setCapacidad(espacio.getCapacidad());
+    }
+
+    public void bajaEspacio(String id){
+        Espacio espacio = buscarEspacioPorId(id);
+
+        if (espacio == null){
+            throw new IllegalArgumentException("El espacio no existe");
+        }
+
+        espacios.remove(espacio);
+    }
+
+    public ArrayList<Espacio> consultarEspacios(){
+        return new ArrayList<>(espacios);
+    }
+
+    public Espacio consultarEspacio(String id){
+        Espacio espacio = buscarEspacioPorId(id);
+
+        if (espacio == null){
+            throw new IllegalArgumentException("El espacio no existe");
+        }
+
+        return espacio;
+    }
+
+    public void cambiarDisponibilidad(String id){
+        Espacio espacio = buscarEspacioPorId(id);
+
+        if (espacio == null){
+            throw new IllegalArgumentException("El espacio no existe");
+        }
+
+        if (espacio.getEstado().equals("DISPONIBLE")) espacio.setEstado("NO_DISPONIBLE");
+        else espacio.setEstado("DISPONIBLE");
+    }
+
+    private void validarEspacio(Espacio espacio) {
+        if (espacio == null){ throw new IllegalArgumentException("El espacio puede ser nulo"); }
+        if (espacio.getIdEspacio() == null || espacio.getIdEspacio().trim().isEmpty()){ throw new IllegalArgumentException("El ID es obligatorio"); }
+        if (espacio.getNombre() == null || espacio.getNombre().trim().isEmpty()){ throw new IllegalArgumentException("El nombre es obligatorio"); }
+        if (espacio.getTipo() == null || espacio.getTipo().trim().isEmpty()){ throw new IllegalArgumentException("El tipo es obligatorio"); }
+        if (espacio.getCapacidad() <= 0){ throw new IllegalArgumentException("La capacidad debe ser mayor que 0"); }
+
+    }
+
+    private Espacio buscarEspacioPorId(String id){
+        for (Espacio espacio : espacios){
+            if (espacio.getIdEspacio().equals(id)){
+                return espacio;
+            }
+        }
+        return null;
     }
 }

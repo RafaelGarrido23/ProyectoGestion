@@ -4,7 +4,7 @@
     "fecha": "2026-10-20",
     "horaInicio": "10:00",
     "horaFin": "11:00",
-    "estado": "CONFIRMADA",
+    "estado": "Confirmado",
     "idProfesor": "P001",
     "idEspacio": "E001",
     "numAsistentes": 20
@@ -14,7 +14,7 @@
     "fecha": "2026-10-21",
     "horaInicio": "12:00",
     "horaFin": "13:00",
-    "estado": "CONFIRMADA",
+    "estado": "Confirmado",
     "idProfesor": "P002",
     "idEspacio": "E003",
     "numAsistentes": 15
