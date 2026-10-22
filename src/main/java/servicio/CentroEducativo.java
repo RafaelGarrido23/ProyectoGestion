@@ -37,7 +37,7 @@ public class CentroEducativo {
     private ArrayList<Reserva> reservas = new ArrayList<>();
 
 
-    /*
+    /* Constructor CSV. Hace falta implementar métodos leerFichero y escribirFichero en las clases DAOCSV para que funcione.
 
     public CentroEducativo(DepartamentoDAOCSV departamentoDAOCSV, ProfesorDAOCSV profesorDAOCSV, EspacioDAOCSV espacioDAOCSV, ReservaDAOCSV reservaDAOCSV) throws IOException {
         this.departamentoDAO = departamentoDAOCSV;

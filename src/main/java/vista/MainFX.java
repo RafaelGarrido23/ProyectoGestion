@@ -1,5 +1,9 @@
 package vista;
 
+import dao.fcsv.DepartamentoDAOCSV;
+import dao.fcsv.EspacioDAOCSV;
+import dao.fcsv.ProfesorDAOCSV;
+import dao.fcsv.ReservaDAOCSV;
 import dao.fjson.DepartamentoDAOFJS;
 import dao.fjson.EspacioDAOFJS;
 import dao.fjson.ProfesorDAOFJS;
@@ -27,11 +31,11 @@ public class MainFX extends Application {
     private final BorderPane root = new BorderPane();
     private CentroEducativo centro;
 
-    public static void main(String[] args){ launch(args); }
+    static void main(String[] args){ launch(args); }
 
     @Override public void start(Stage stage){
         try{
-           centro=new CentroEducativo(new DepartamentoDAOFJS("json/departamento.json"),new ProfesorDAOFJS("json/profesores.json"),new EspacioDAOFJS("json/espacios.json"),new ReservaDAOFJS("json/reserva.json"));
+           centro=new CentroEducativo(new DepartamentoDAOCSV("csv/departamento.csv"),new ProfesorDAOCSV("csv/profesores.csv"),new EspacioDAOCSV("csv/espacios.csv"),new ReservaDAOCSV("csv/reserva.csv"));
         } catch(IOException e){ mostrarError("Error al cargar los CSV",e.getMessage()); return; }
         root.setTop(crearMenu()); root.setCenter(pantallaInicio());
         stage.setScene(new Scene(root,1100,680));
