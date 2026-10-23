@@ -39,10 +39,10 @@ public class MainFX extends Application {
     @Override public void start(Stage stage) throws IOException {
         try{
             centro = ficherosCSV(); tipoFichero = "CSV";
-            // centro = ficherosDAT(); tipoFichero = "DAT";
+            centro = ficherosDAT(); tipoFichero = "DAT";
             // centro = ficherosJSON(); tipoFichero = "JSON";
             // Ahora mismo, el proyecto trabaja con JSON
-        } catch(IOException e){ mostrarError("Error al cargar los CSV/DAT/JSON",e.getMessage()); return; }
+        } catch(IOException e){ mostrarError("Error al cargar los " + tipoFichero,e.getMessage()); return; }
         root.setTop(crearMenu()); root.setCenter(pantallaInicio());
         stage.setScene(new Scene(root,1100,680));
         stage.setTitle("Gestión de reservas - Centro Educativo (" + tipoFichero + ")");
@@ -154,9 +154,10 @@ public class MainFX extends Application {
     }
 
     private VBox pantallaAltaEspacio(){
-        TextField id=campo("ID"),nombre=campo("Nombre"),tipo=campo("Tipo"),ubicacion=campo("Ubicación"),cap=campo("Capacidad"),equip=campo("Equipamiento");Button guardar=new Button("Guardar");
+        TextField id=campo("ID"),nombre=campo("Nombre"),tipo=campo("Tipo"),ubicacion=campo("Ubicación"),cap=campo("Capacidad"),equip=campo("Equipamiento");
+        Button guardar=new Button("Guardar");
         guardar.setOnAction(e->{try{centro.altaEspacio(new Espacio(id.getText().trim(),nombre.getText().trim(),tipo.getText().trim(),ubicacion.getText(),Integer.parseInt(cap.getText().trim()),equip.getText(),"DISPONIBLE"));mostrarInfo("Espacio creado.");root.setCenter(pantallaEspacios());}catch(Exception ex){mostrarError("Error",ex.getMessage());}});
-        VBox b=new VBox(10);b.setPadding(new Insets(30));Label t=new Label("NUEVO ESPACIO");t.setStyle("-fx-font-size:22px;-fx-font-weight:bold;");b.getChildren().addAll(t,new Label("ID"),id,new Label("Nombre"),nombre,new Label("Tipo"),tipo,new Label("Ubicación"),ubicacion,new Label("Capacidad"),cap,new Label("Equipamiento"),equip);return b;
+        VBox b=new VBox(10);b.setPadding(new Insets(30));Label t=new Label("NUEVO ESPACIO");t.setStyle("-fx-font-size:22px;-fx-font-weight:bold;");b.getChildren().addAll(t,new Label("ID"),id,new Label("Nombre"),nombre,new Label("Tipo"),tipo,new Label("Ubicación"),ubicacion,new Label("Capacidad"),cap,new Label("Equipamiento"),equip, guardar);return b;
     }
 
     private VBox pantallaReservas(){
@@ -195,7 +196,7 @@ public class MainFX extends Application {
     private VBox contenedor(String titulo,TableView<?> tabla,Button... botones){VBox b=new VBox(12);b.setPadding(new Insets(25));Label t=new Label(titulo);t.setStyle("-fx-font-size:22px;-fx-font-weight:bold;");HBox acciones=new HBox(10,botones);VBox.setVgrow(tabla,Priority.ALWAYS);b.getChildren().addAll(t,tabla,acciones);return b;}
     private VBox formulario(String titulo,Control[] controles,String[] etiquetas){VBox b=new VBox(10);b.setPadding(new Insets(30));Label t=new Label(titulo);t.setStyle("-fx-font-size:22px;-fx-font-weight:bold;");b.getChildren().add(t);for(int i=0;i<controles.length;i++){if(i<etiquetas.length)b.getChildren().add(new Label(etiquetas[i]));b.getChildren().add(controles[i]);}return b;}
     private TextField campo(String prompt){TextField f=new TextField();f.setPromptText(prompt);return f;}
-    private void guardarDatos(){try{centro.guardarTodo();mostrarInfo("Datos guardados correctamente en csv/dat/json.");}catch(IOException e){mostrarError("Error al guardar",e.getMessage());}}
+    private void guardarDatos(){try{centro.guardarTodo();mostrarInfo("Datos guardados correctamente en " + tipoFichero + ".");}catch(IOException e){mostrarError("Error al guardar",e.getMessage());}}
     public void mostrarInfo(String m){new Alert(Alert.AlertType.INFORMATION,m,ButtonType.OK).showAndWait();}
     public void mostrarError(String titulo,String m){new Alert(Alert.AlertType.ERROR,m==null?"Error desconocido":m,ButtonType.OK).showAndWait();}
 }

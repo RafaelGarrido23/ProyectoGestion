@@ -57,9 +57,7 @@ public class ReservaDAOFJS implements ReservaDAO {
                 .registerTypeAdapter(
                         LocalDate.class, new AdaptadorLocalDate())
                 .registerTypeAdapter(
-                        Reserva.class, new SerializadorProfesor())
-                .registerTypeAdapter(
-                        Reserva.class, new SerializadorEspacio())
+                        Reserva.class, new SerializadorReserva())
                 .setPrettyPrinting()
                 .create();
 

@@ -5,9 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import dao.ProfesorDAO;
 import dao.fjson.adaptadoresJSON.DeserializadorProfesor;
-import dao.fjson.adaptadoresJSON.SerializadorDepartamento;
 import dao.fjson.adaptadoresJSON.SerializadorProfesor;
-import modelo.Departamento;
 import modelo.Profesor;
 
 import java.io.FileReader;
@@ -50,7 +48,7 @@ public class ProfesorDAOFJS implements ProfesorDAO {
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(
-                        Profesor.class, new SerializadorDepartamento())
+                        Profesor.class, new SerializadorProfesor())
                 .setPrettyPrinting()
                 .create();
 
