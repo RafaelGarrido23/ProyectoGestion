@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public interface DepartamentoDAO {
 
-    public ArrayList<Departamento> leerFichero();
+    ArrayList<Departamento> leerFichero();
 
-    public void escribirFichero(ArrayList<Departamento> departamentos);
+    void escribirFichero(ArrayList<Departamento> departamentos);
 }
