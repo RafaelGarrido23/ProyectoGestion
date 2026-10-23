@@ -4,6 +4,10 @@ import dao.fcsv.DepartamentoDAOCSV;
 import dao.fcsv.EspacioDAOCSV;
 import dao.fcsv.ProfesorDAOCSV;
 import dao.fcsv.ReservaDAOCSV;
+import dao.fdat.DepartamentoDAOFB;
+import dao.fdat.EspacioDAOFB;
+import dao.fdat.ProfesorDAOFB;
+import dao.fdat.ReservaDAOFB;
 import dao.fjson.DepartamentoDAOFJS;
 import dao.fjson.EspacioDAOFJS;
 import dao.fjson.ProfesorDAOFJS;
@@ -33,6 +37,7 @@ public class MainFX extends Application {
 
     @Override public void start(Stage stage){
         try{
+           centro=new CentroEducativo(new DepartamentoDAOFB("dat/departamento.dat"), new ProfesorDAOFB("dat/profesor.dat"), new EspacioDAOFB("dat/espacio.dat"), new ReservaDAOFB("dat/reserva.dat"));
            centro=new CentroEducativo(new DepartamentoDAOFJS("json/departamento.json"),new ProfesorDAOFJS("json/profesores.json"),new EspacioDAOFJS("json/espacios.json"),new ReservaDAOFJS("json/reserva.json"));
         } catch(IOException e){ mostrarError("Error al cargar los CSV",e.getMessage()); return; }
         root.setTop(crearMenu()); root.setCenter(pantallaInicio());
