@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import dao.ProfesorDAO;
 import dao.fjson.adaptadoresJSON.DeserializadorProfesor;
+import dao.fjson.adaptadoresJSON.SerializadorDepartamento;
+import dao.fjson.adaptadoresJSON.SerializadorProfesor;
 import modelo.Departamento;
 import modelo.Profesor;
 
@@ -48,13 +50,14 @@ public class ProfesorDAOFJS implements ProfesorDAO {
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(
-                        Profesor.class, new DeserializadorProfesor())
+                        Profesor.class, new SerializadorDepartamento())
+                .setPrettyPrinting()
                 .create();
 
-        try(FileWriter flujoDatos = new FileWriter(ruta);) {
+        try (FileWriter flujoDatos = new FileWriter(ruta)) {
             gson.toJson(profesores, flujoDatos);
         } catch (IOException e) {
-            throw new RuntimeException("Error al escribir las reservas", e);
+            throw new RuntimeException("Error al escribir los profesores", e);
         }
     }
 

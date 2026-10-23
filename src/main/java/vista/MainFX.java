@@ -32,23 +32,38 @@ import java.util.ArrayList;
 public class MainFX extends Application {
     private final BorderPane root = new BorderPane();
     private CentroEducativo centro;
+    private String tipoFichero;
 
     static void main(String[] args){ launch(args); }
 
-    @Override public void start(Stage stage){
+    @Override public void start(Stage stage) throws IOException {
         try{
-           centro=new CentroEducativo(new DepartamentoDAOFB("dat/departamento.dat"), new ProfesorDAOFB("dat/profesor.dat"), new EspacioDAOFB("dat/espacio.dat"), new ReservaDAOFB("dat/reserva.dat"));
-           centro=new CentroEducativo(new DepartamentoDAOFJS("json/departamento.json"),new ProfesorDAOFJS("json/profesores.json"),new EspacioDAOFJS("json/espacios.json"),new ReservaDAOFJS("json/reserva.json"));
-        } catch(IOException e){ mostrarError("Error al cargar los CSV",e.getMessage()); return; }
+            centro = ficherosCSV(); tipoFichero = "CSV";
+            // centro = ficherosDAT(); tipoFichero = "DAT";
+            // centro = ficherosJSON(); tipoFichero = "JSON";
+            // Ahora mismo, el proyecto trabaja con JSON
+        } catch(IOException e){ mostrarError("Error al cargar los CSV/DAT/JSON",e.getMessage()); return; }
         root.setTop(crearMenu()); root.setCenter(pantallaInicio());
         stage.setScene(new Scene(root,1100,680));
-        stage.setTitle("Gestión de reservas - Centro Educativo (CSV)");
+        stage.setTitle("Gestión de reservas - Centro Educativo (" + tipoFichero + ")");
         stage.show();
+    }
+
+    private CentroEducativo ficherosCSV() throws IOException {
+        return new CentroEducativo(new DepartamentoDAOCSV("csv/departamento.csv"), new ProfesorDAOCSV("csv/profesores.csv"), new EspacioDAOCSV("csv/espacios.csv"), new ReservaDAOCSV("csv/reserva.csv"));
+    }
+
+    private CentroEducativo ficherosDAT() throws IOException {
+        return new CentroEducativo(new DepartamentoDAOFB("dat/departamento.dat"), new ProfesorDAOFB("dat/profesores.dat"), new EspacioDAOFB("dat/espacios.dat"), new ReservaDAOFB("dat/reserva.dat"));
+    }
+
+    private CentroEducativo ficherosJSON() throws IOException {
+        return new CentroEducativo(new DepartamentoDAOFJS("json/departamento.json"),new ProfesorDAOFJS("json/profesores.json"),new EspacioDAOFJS("json/espacios.json"),new ReservaDAOFJS("json/reserva.json"));
     }
 
     private MenuBar crearMenu(){
         Menu archivo=new Menu("Archivo");
-        MenuItem guardar=new MenuItem("Guardar datos CSV"); guardar.setOnAction(e->guardarDatos());
+        MenuItem guardar=new MenuItem("Guardar datos " + tipoFichero); guardar.setOnAction(e->guardarDatos());
         MenuItem salir=new MenuItem("Salir"); salir.setOnAction(e->System.exit(0)); archivo.getItems().addAll(guardar,salir);
 
         Menu dep=new Menu("Departamentos");
@@ -72,7 +87,7 @@ public class MainFX extends Application {
     private VBox pantallaInicio(){
         VBox box=new VBox(12); box.setPadding(new Insets(30));
         Label t=new Label("GESTIÓN DE RESERVAS"); t.setStyle("-fx-font-size:28px;-fx-font-weight:bold;");
-        Label s=new Label("Fuente de datos: ficheros CSV"); s.setStyle("-fx-font-size:16px;");
+        Label s=new Label("Fuente de datos: ficheros " + tipoFichero); s.setStyle("-fx-font-size:16px;");
         box.getChildren().addAll(t,s,new Label("Utilice el menú para gestionar departamentos, profesores, espacios y reservas."));
         return box;
     }

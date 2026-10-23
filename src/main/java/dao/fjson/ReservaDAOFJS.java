@@ -4,9 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import dao.ReservaDAO;
-import dao.fjson.adaptadoresJSON.AdaptadorLocalDate;
-import dao.fjson.adaptadoresJSON.AdaptadorLocalTime;
-import dao.fjson.adaptadoresJSON.DeserializadorReserva;
+import dao.fjson.adaptadoresJSON.*;
 import modelo.Reserva;
 
 import java.io.FileReader;
@@ -59,10 +57,13 @@ public class ReservaDAOFJS implements ReservaDAO {
                 .registerTypeAdapter(
                         LocalDate.class, new AdaptadorLocalDate())
                 .registerTypeAdapter(
-                        Reserva.class, new DeserializadorReserva())
+                        Reserva.class, new SerializadorProfesor())
+                .registerTypeAdapter(
+                        Reserva.class, new SerializadorEspacio())
+                .setPrettyPrinting()
                 .create();
 
-        try(FileWriter flujoDatos = new FileWriter(ruta);) {
+        try (FileWriter flujoDatos = new FileWriter(ruta)) {
             gson.toJson(reservas, flujoDatos);
         } catch (IOException e) {
             throw new RuntimeException("Error al escribir las reservas", e);

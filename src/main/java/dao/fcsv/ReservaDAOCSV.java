@@ -13,11 +13,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ReservaDAOCSV implements ReservaDAO {
 
     private final String ruta;
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public ReservaDAOCSV(String ruta) {
         this.ruta = ruta;
@@ -34,7 +36,7 @@ public class ReservaDAOCSV implements ReservaDAO {
 
                 if (datos.length >= 8) {
                     String idReserva = datos[0].trim();
-                    LocalDate fecha = LocalDate.parse(datos[1].trim());
+                    LocalDate fecha = LocalDate.parse(datos[1].trim(), formatter);
                     LocalTime horaInicio = LocalTime.parse(datos[2].trim());
                     LocalTime horaFin = LocalTime.parse(datos[3].trim());
 
@@ -80,15 +82,15 @@ public class ReservaDAOCSV implements ReservaDAO {
                 String idProf = res.getIdProfesor() != null ? res.getIdProfesor().getIdProfesor() : "";
                 String idEsp = res.getIdEspacio() != null ? res.getIdEspacio().getIdEspacio() : "";
 
-                String estadoStr = "CONFIRMADA";
+                String estadoStr = "Confirmado";
                 if (res.getEstado() == EstadoReserva.Cancelado) {
-                    estadoStr = "CANCELADA";
+                    estadoStr = "Cancelado";
                 } else if (res.getEstado() == EstadoReserva.Finalizado) {
-                    estadoStr = "FINALIZADA";
+                    estadoStr = "Finalizado";
                 }
 
                 bw.write(res.getIdReserva() + ";" +
-                        res.getFecha() + ";" +
+                        res.getFecha().format(formatter) + ";" +
                         res.getHoraInicio() + ";" +
                         res.getHoraFin() + ";" +
                         estadoStr + ";" +

@@ -1,22 +1,24 @@
 [
   {
-    "idReserva": "R001",
-    "fecha": "20/10/2026",
-    "horaInicio": "10:00",
-    "horaFin": "11:00",
-    "estado": "Confirmado",
-    "idProfesor": "P001",
-    "idEspacio": "E001",
-    "numAsistentes": 20
+    "idReserva":"R001",
+    "fecha":"20/10/2026",
+    "horaInicio":"10:00",
+    "horaFin":"11:00",
+    "estado":"Confirmado",
+    "idProfesor":"P001",
+    "idEspacio":"E001",
+    "motivo":"Práctica de programación",
+    "numAsistentes":20
   },
   {
-    "idReserva": "R002",
-    "fecha": "21/10/2026",
-    "horaInicio": "12:00",
-    "horaFin": "13:00",
-    "estado": "Confirmado",
-    "idProfesor": "P002",
-    "idEspacio": "E003",
-    "numAsistentes": 15
+    "idReserva":"R002",
+    "fecha":"21/10/2026",
+    "horaInicio":"12:00",
+    "horaFin":"13:00",
+    "estado":"Confirmado",
+    "idProfesor":"P002",
+    "idEspacio":"E003",
+    "motivo":"Reunión de departamento",
+    "numAsistentes":15
   }
 ]
