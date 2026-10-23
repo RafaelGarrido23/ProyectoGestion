@@ -40,7 +40,7 @@ public class MainFX extends Application {
         try{
             centro = ficherosCSV(); tipoFichero = "CSV";
             centro = ficherosDAT(); tipoFichero = "DAT";
-            // centro = ficherosJSON(); tipoFichero = "JSON";
+            centro = ficherosJSON(); tipoFichero = "JSON";
             // Ahora mismo, el proyecto trabaja con JSON
         } catch(IOException e){ mostrarError("Error al cargar los " + tipoFichero,e.getMessage()); return; }
         root.setTop(crearMenu()); root.setCenter(pantallaInicio());
