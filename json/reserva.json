@@ -5,8 +5,25 @@
     "horaInicio": "10:00",
     "horaFin": "11:00",
     "estado": "Confirmado",
-    "idProfesor": "P001",
-    "idEspacio": "E001",
+    "idProfesor": {
+      "idProfesor": "P001",
+      "nombre": "Ana",
+      "apellidos": "García López",
+      "email": "ana.garcia@iesvicentemedina.es",
+      "idDepartamento": {
+        "idDepartamento": "INF",
+        "nombre": "Informática"
+      }
+    },
+    "idEspacio": {
+      "idEspacio": "E001",
+      "nombre": "Aula de Informática 1",
+      "tipo": "Aula informática",
+      "ubicacion": "Edificio principal",
+      "capacidad": 24,
+      "equipamiento": "24 PC, proyector",
+      "estado": "DISPONIBLE"
+    },
     "numAsistentes": 20
   },
   {
@@ -15,8 +32,25 @@
     "horaInicio": "12:00",
     "horaFin": "13:00",
     "estado": "Confirmado",
-    "idProfesor": "P002",
-    "idEspacio": "E003",
+    "idProfesor": {
+      "idProfesor": "P002",
+      "nombre": "Carlos",
+      "apellidos": "Martínez Ruiz",
+      "email": "carlos.martinez@iesvicentemedina.es",
+      "idDepartamento": {
+        "idDepartamento": "MAT",
+        "nombre": "Matemáticas"
+      }
+    },
+    "idEspacio": {
+      "idEspacio": "E003",
+      "nombre": "Aula Magna",
+      "tipo": "Salón de actos",
+      "ubicacion": "Edificio principal",
+      "capacidad": 120,
+      "equipamiento": "Proyector, sonido",
+      "estado": "DISPONIBLE"
+    },
     "numAsistentes": 15
   }
 ]

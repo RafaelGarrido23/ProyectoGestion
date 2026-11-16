@@ -29,8 +29,6 @@ public class ReservaDAOFJS implements ReservaDAO {
                     LocalTime.class, new AdaptadorLocalTime())
             .registerTypeAdapter(
                     LocalDate.class, new AdaptadorLocalDate())
-            .registerTypeAdapter(
-                    Reserva.class, new DeserializadorReserva())
             .create();
 
         try (FileReader flujoDatos = new FileReader(ruta)){
@@ -56,8 +54,6 @@ public class ReservaDAOFJS implements ReservaDAO {
                         LocalTime.class, new AdaptadorLocalTime())
                 .registerTypeAdapter(
                         LocalDate.class, new AdaptadorLocalDate())
-                .registerTypeAdapter(
-                        Reserva.class, new SerializadorReserva())
                 .setPrettyPrinting()
                 .create();
 

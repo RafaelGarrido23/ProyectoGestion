@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import dao.ProfesorDAO;
-import dao.fjson.adaptadoresJSON.DeserializadorProfesor;
-import dao.fjson.adaptadoresJSON.SerializadorProfesor;
 import modelo.Profesor;
 
 import java.io.FileReader;
@@ -24,8 +22,6 @@ public class ProfesorDAOFJS implements ProfesorDAO {
     public ArrayList<Profesor> leerFichero(){
 
         Gson gson = new GsonBuilder()
-            .registerTypeAdapter(
-                    Profesor.class, new DeserializadorProfesor())
             .create();
 
         try (FileReader flujoDatos =
@@ -47,8 +43,6 @@ public class ProfesorDAOFJS implements ProfesorDAO {
     public void escribirFichero(ArrayList<Profesor> profesores) {
 
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(
-                        Profesor.class, new SerializadorProfesor())
                 .setPrettyPrinting()
                 .create();
 
