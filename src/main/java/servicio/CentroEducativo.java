@@ -337,8 +337,8 @@ public class CentroEducativo {
     public void cambiarDisponibilidad(String id){
         Espacio espacio = buscarEspacioPorId(id);
 
-        if (espacio.getEstado().equals("DISPONIBLE")) espacio.setEstado("NO_DISPONIBLE");
-        else espacio.setEstado("DISPONIBLE");
+        if (espacio.getDisponible().equals("DISPONIBLE")) espacio.setDisponible("NO_DISPONIBLE");
+        else espacio.setDisponible("DISPONIBLE");
     }
 
     private void validarEspacio(Espacio espacio) {
@@ -426,7 +426,7 @@ public class CentroEducativo {
         Espacio espacio = buscarEspacioPorId(nuevo.getIdEspacio().getIdEspacio());
         Profesor profesor = buscarProfesorPorId(nuevo.getIdProfesor().getIdProfesor());
 
-        if (!espacio.getEstado().equals("DISPONIBLE")) {
+        if (!espacio.getDisponible().equals("DISPONIBLE")) {
             throw new IllegalArgumentException("El espacio no está disponible");
         }
 

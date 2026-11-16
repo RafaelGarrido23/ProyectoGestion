@@ -55,7 +55,7 @@ public class EspacioDAOCSV implements EspacioDAO {
                         esp.getUbicacion() + ";" +
                         esp.getCapacidad() + ";" +
                         esp.getEquipamiento() + ";" +
-                        esp.getEstado());
+                        esp.getDisponible());
                 bw.newLine();
             }
         } catch (IOException e) {

@@ -9,9 +9,6 @@ public class Departamento implements Serializable {
     private String idDepartamento;
     private String nombre;
 
-    public Departamento() {
-    }
-
     public Departamento(String idDepartamento, String nombre) {
         this.idDepartamento = idDepartamento;
         this.nombre = nombre;

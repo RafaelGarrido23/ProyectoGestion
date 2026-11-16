@@ -27,7 +27,6 @@ import servicio.CentroEducativo;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 
 public class MainFX extends Application {
     private final BorderPane root = new BorderPane();
@@ -140,7 +139,7 @@ public class MainFX extends Application {
         TableColumn<Espacio,String> ubicacion=new TableColumn<>("Ubicación");ubicacion.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getUbicacion()));
         TableColumn<Espacio,Number> cap=new TableColumn<>("Capacidad");cap.setCellValueFactory(d->new SimpleIntegerProperty(d.getValue().getCapacidad()));
         TableColumn<Espacio,String> equip=new TableColumn<>("Equipamiento");equip.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getEquipamiento()));
-        TableColumn<Espacio,String> disponible=new TableColumn<>("Disponible");disponible.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getEstado().equals("DISPONIBLE")?"Sí":"No"));
+        TableColumn<Espacio,String> disponible=new TableColumn<>("Disponible");disponible.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getDisponible().equals("DISPONIBLE")?"Sí":"No"));
         tabla.getColumns().addAll(id,nombre,tipo,ubicacion,cap,equip,disponible);cargar(tabla,centro.getEspacios());
         Button cambiar=new Button("Cambiar disponibilidad");cambiar.setOnAction(e->{
             Espacio x=tabla.getSelectionModel().getSelectedItem();
